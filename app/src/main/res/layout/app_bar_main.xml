@@ -17,4 +17,8 @@
         android:layout_margin="@dimen/general_padding"
         android:background="@drawable/skin_toolbar"
         android:elevation="4dp"/>
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

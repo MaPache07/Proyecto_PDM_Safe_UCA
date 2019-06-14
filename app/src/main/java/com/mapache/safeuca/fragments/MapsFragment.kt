@@ -1,5 +1,6 @@
 package com.mapache.safeuca.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,5 +41,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        mMap.setOnMapClickListener {
+
+        }
     }
 }
