@@ -9,6 +9,6 @@ data class Zone (
     val name : String,
     val arrayLat : String,
     val arrayLng : String,
-    val edifice : Int,
+    val building : Int,
     val level : Int
 )

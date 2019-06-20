@@ -11,13 +11,13 @@ data class Report(
     @PrimaryKey val id : Int,
     val name : String,
     val danger : Int,
+    val type : String,
+    val status : String,
+    val mailUser : Int,
     val description : String,
     val lat : Double,
     val ltn : Double,
     val idZone : Int,
-    val mailUser : Int,
-    val image : String,
-    val type : String,
     val level : Int,
-    val status : String
+    val image : String
 )
