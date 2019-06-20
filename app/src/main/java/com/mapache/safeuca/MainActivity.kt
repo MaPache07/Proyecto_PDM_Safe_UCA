@@ -12,6 +12,7 @@ import android.view.Menu
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.fragments.MapsFragment
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-        fragmentMap = MapsFragment.newInstance()
+        fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
         changeFragment(R.id.fragment_map, fragmentMap)
     }
 
