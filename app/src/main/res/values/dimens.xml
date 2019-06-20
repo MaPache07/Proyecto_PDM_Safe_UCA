@@ -9,4 +9,5 @@
     <dimen name="height_status_bar">48dp</dimen>
     <dimen name="radius">6dp</dimen>
     <dimen name="generalPadding">8dp</dimen>
+    <dimen name="normalText">24sp</dimen>
 </resources>

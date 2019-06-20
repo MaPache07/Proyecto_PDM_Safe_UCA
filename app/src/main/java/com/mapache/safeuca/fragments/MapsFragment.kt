@@ -19,8 +19,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
+import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
-import kotlinx.android.synthetic.main.content_dialog.view.*
+import kotlinx.android.synthetic.main.initial_dialog.view.*
+import kotlinx.android.synthetic.main.zone_dialog.view.*
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
@@ -28,6 +30,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBottomSheetDialog : BottomSheetDialog
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
+    private lateinit var zone : Zone
     var click : newReportClick? = null
 
     companion object{
@@ -54,25 +57,44 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
 
-        val contentDialog = layoutInflater.inflate(R.layout.content_dialog, null)
-        mBottomSheetDialog.setContentView(contentDialog)
+        val contentDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
+        val contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
+        val contentBuildingDialog = layoutInflater.inflate(R.layout.building_dialog, null)
 
-        contentDialog.action_no.setOnClickListener {
+        mBottomSheetDialog.setContentView(contentDialog)
+        setOnClickListeners(contentDialog, contentZoneDialog, contentBuildingDialog)
+        return view
+    }
+
+    fun setOnClickListeners(contentInitialDialog : View, contentZoneDialog: View, contentBuildingDialog : View){
+        mBottomSheetDialog.setOnDismissListener{
             marker.remove()
+        }
+
+        contentInitialDialog.initial_no.setOnClickListener {
             mBottomSheetDialog.dismiss()
         }
 
-        contentDialog.action_si.setOnClickListener {
+        contentInitialDialog.initial_si.setOnClickListener {
             if(inZone(marker.position)){
-
+                mBottomSheetDialog.setContentView(contentZoneDialog)
             } else{
                 click?.newReportClick(marker.position)
-                marker.remove()
                 mBottomSheetDialog.dismiss()
             }
         }
 
-        return view
+        contentZoneDialog.zone_no.setOnClickListener {
+            click?.newReportClick(marker.position)
+        }
+
+        contentZoneDialog.zone_si.setOnClickListener {
+            if(zone.building != null){
+                mBottomSheetDialog.setContentView(contentBuildingDialog)
+            } else{
+                click?.newReportClick(marker.position)
+            }
+        }
     }
 
     override fun onDetach() {

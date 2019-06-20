@@ -3,27 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/generalPadding"
-    android:background="@drawable/skin_toolbar">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/generalPadding">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
-        android:textSize="24sp"
-        android:text="@string/dialogZone"/>
+        android:textSize="@dimen/normalText"
+        android:text="La zona de riesgo se encuentra en ?"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
         <Button
-            android:id="@+id/action_si"
+            android:id="@+id/zone_si"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Si"/>
         <Button
-            android:id="@+id/action_no"
+            android:id="@+id/zone_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="no"/>
