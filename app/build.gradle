@@ -52,4 +52,11 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerVersion"
     implementation "com.github.bumptech.glide:$rootProject.glideVersion"
     implementation 'com.android.support:design:28.0.0'
+
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retroVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.retroVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$rootProject.retroAdapterVersion"
+
+    implementation "com.squareup.moshi:moshi-kotlin:$rootProject.moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$rootProject.moshiVersion"
 }

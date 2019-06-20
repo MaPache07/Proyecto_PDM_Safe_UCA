@@ -2,6 +2,7 @@ package com.mapache.safeuca.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,6 +112,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener {
             marker = mMap.addMarker(MarkerOptions().position(it).title("Zona de riesgo"))
+            Log.d("Hola", it.latitude.toString() + " " + it.longitude.toString())
             mBottomSheetDialog.show()
         }
     }

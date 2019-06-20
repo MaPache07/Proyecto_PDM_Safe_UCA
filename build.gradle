@@ -6,6 +6,9 @@ ext {
     coroutines = '1.2.0'
     recyclerVersion = '1.1.0-alpha05'
     glideVersion = 'glide:4.9.0'
+    moshiVersion = '1.8.0'
+    retroVersion = '2.5.0'
+    retroAdapterVersion = '0.9.2'
 }
 
 buildscript {
