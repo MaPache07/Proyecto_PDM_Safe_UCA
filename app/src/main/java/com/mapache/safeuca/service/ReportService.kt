@@ -12,10 +12,10 @@ import retrofit2.http.GET
 
 interface ReportService {
 
-    @GET("")
+    @GET("/reports")
     fun getReports() : Deferred<Response<List<Report>>>
 
-    @GET("")
+    @GET("/zones")
     fun getZones() : Deferred<Response<List<Zone>>>
 
     companion object{

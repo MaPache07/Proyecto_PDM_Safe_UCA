@@ -10,6 +10,9 @@ import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Rol
 import com.mapache.safeuca.database.entities.User
 import com.mapache.safeuca.database.entities.Zone
+import com.mapache.safeuca.service.ReportService
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
 
 class ReportRepository(private val reportDao: ReportDao, private val zoneDao: ZoneDao, private val userDao: UserDao, private val rolDao: RolDao) {
 
@@ -38,14 +41,32 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
         rolDao.insert(rol)
     }
 
-    fun getReport(id : Int) = reportDao.getReport(id)
+    fun getReport(id : String) = reportDao.getReport(id)
 
-    fun getZone(id : Int) = zoneDao.getZone(id)
+    fun getZone(id : String) = zoneDao.getZone(id)
 
     fun getUser(mail : String) = userDao.getUser(mail)
 
     fun getRol(id : Int) = rolDao.getRol(id)
 
     fun getReportPerUser(mail : String) = reportDao.getReportPerUser(mail)
+
+    fun getReportsAsync() : Deferred<Response<List<Report>>> {
+        return ReportService.getRetrofit().getReports()
+    }
+
+    fun getZonesAsync() : Deferred<Response<List<Zone>>> {
+        return  ReportService.getRetrofit().getZones()
+    }
+
+    @WorkerThread
+    suspend fun nukeReports(){
+        return reportDao.nukeTable()
+    }
+
+    @WorkerThread
+    suspend fun nukeZones(){
+        return zoneDao.nukeTable()
+    }
 
 }

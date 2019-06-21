@@ -16,8 +16,11 @@ interface ReportDao {
     fun getAllReport() : LiveData<List<Report>>
 
     @Query("SELECT * FROM report_table WHERE id = :id")
-    fun getReport(id : Int) : Report
+    fun getReport(id : String) : Report
 
     @Query("SELECT * FROM report_table WHERE mailUser = :mail")
     fun getReportPerUser(mail : String) : LiveData<List<Report>>
+
+    @Query("DELETE FROM report_table")
+    suspend fun nukeTable()
 }

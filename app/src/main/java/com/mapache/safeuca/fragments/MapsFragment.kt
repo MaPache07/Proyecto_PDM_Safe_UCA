@@ -57,6 +57,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        reportViewModel.getZonesAzync()
+        reportViewModel.getReportsAsync()
+
 
         val contentDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
         val contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)

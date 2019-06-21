@@ -13,8 +13,11 @@ interface ZoneDao {
     suspend fun insert(zone : Zone)
 
     @Query("SELECT * FROM zone_table WHERE id = :id")
-    fun getZone(id : Int) : Zone
+    fun getZone(id : String) : Zone
 
     @Query("SELECT * FROM zone_table")
     fun getAllZone() : LiveData<List<Zone>>
+
+    @Query("DELETE FROM zone_table")
+    suspend fun nukeTable()
 }

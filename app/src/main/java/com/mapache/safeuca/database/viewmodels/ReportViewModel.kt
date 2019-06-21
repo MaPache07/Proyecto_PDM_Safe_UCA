@@ -1,6 +1,7 @@
 package com.mapache.safeuca.database.viewmodels
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -13,7 +14,7 @@ import com.mapache.safeuca.database.repositories.ReportRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ReportViewModel(application: Application) : AndroidViewModel(application) {
+class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val repository :ReportRepository
     val allReports : LiveData<List<Report>>
@@ -22,10 +23,10 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     val allRols : LiveData<List<Rol>>
 
     init {
-        val reportDao = RoomDB.getDatabase(application).reportDao()
-        val zoneDao = RoomDB.getDatabase(application).zoneDao()
-        val userDao = RoomDB.getDatabase(application).userDao()
-        val rolDao = RoomDB.getDatabase(application).rolDao()
+        val reportDao = RoomDB.getDatabase(app).reportDao()
+        val zoneDao = RoomDB.getDatabase(app).zoneDao()
+        val userDao = RoomDB.getDatabase(app).userDao()
+        val rolDao = RoomDB.getDatabase(app).rolDao()
 
         repository = ReportRepository(reportDao, zoneDao, userDao, rolDao)
         allReports = repository.allReports
@@ -49,9 +50,41 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         repository.insertRol(rol)
     }
 
-    fun getReport(id : Int) = repository.getReport(id)
+    fun getReportsAsync() = viewModelScope.launch {
+        this@ReportViewModel.nukeReports()
+        val response = repository.getReportsAsync().await()
+        if(response.isSuccessful) with(response){
+            this.body()?.forEach {
+                this@ReportViewModel.insertReport(it)
+            }
+        } else with(response){
+            when(this.code()){
+                404 -> {
+                    Toast.makeText(app, "Reporte no encontrado", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
 
-    fun getZone(id : Int) = repository.getZone(id)
+    fun getZonesAzync() = viewModelScope.launch {
+        this@ReportViewModel.nukeZones()
+        val response = repository.getZonesAsync().await()
+        if(response.isSuccessful) with(response){
+            this.body()?.forEach {
+                this@ReportViewModel.insertZone(it)
+            }
+        } else with(response){
+            when(this.code()){
+                404 -> {
+                    Toast.makeText(app, "Zona no encontrada", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    fun getReport(id : String) = repository.getReport(id)
+
+    fun getZone(id : String) = repository.getZone(id)
 
     fun getUser(mail : String) = repository.getUser(mail)
 
@@ -59,4 +92,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getReportPerUser(mail : String) = repository.getReportPerUser(mail)
 
+    private suspend fun nukeReports() = repository.nukeReports()
+
+    private suspend fun nukeZones() = repository.nukeZones()
 }
