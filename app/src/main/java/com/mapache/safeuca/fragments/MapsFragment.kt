@@ -112,7 +112,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener {
             marker = mMap.addMarker(MarkerOptions().position(it).title("Zona de riesgo"))
-            Log.d("Hola", it.latitude.toString() + " " + it.longitude.toString())
             mBottomSheetDialog.show()
         }
     }
