@@ -1,8 +1,8 @@
 package com.mapache.safeuca.service
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
+import com.mapache.safeuca.models.ReportRetro
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -13,10 +13,7 @@ import retrofit2.http.GET
 interface ReportService {
 
     @GET("/reports")
-    fun getReports() : Deferred<Response<List<Report>>>
-
-    @GET("/zones")
-    fun getZones() : Deferred<Response<List<Zone>>>
+    fun getReports() : Deferred<Response<List<ReportRetro>>>
 
     companion object{
         fun getRetrofit() : ReportService{

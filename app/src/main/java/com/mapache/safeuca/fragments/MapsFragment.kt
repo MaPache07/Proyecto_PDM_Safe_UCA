@@ -1,6 +1,9 @@
 package com.mapache.safeuca.fragments
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
@@ -24,6 +28,7 @@ import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import kotlinx.android.synthetic.main.initial_dialog.view.*
 import kotlinx.android.synthetic.main.zone_dialog.view.*
+import java.util.*
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
@@ -57,7 +62,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        reportViewModel.getZonesAzync()
+        //reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
 
@@ -109,6 +114,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         initMap(mMap)
+        initZones(mMap)
 
         val uca = LatLng(13.6816, -89.235)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uca, 18F))
@@ -121,8 +127,24 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     fun initMap(mMap : GoogleMap){
         reportViewModel.allReports.observe(this, Observer {
-            for(report : Report in it){
-                mMap.addMarker(MarkerOptions().position(LatLng(report.lat, report.ltn)).title(report.name))
+            it.forEach{
+                mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+            }
+        })
+    }
+
+    fun initZones(mMap: GoogleMap){
+        reportViewModel.allZones.observe(this, Observer {
+            it.forEach{
+                var i = 0
+                var latArray = it.arrayLat.substring(1, it.arrayLat.length-1).split(',')
+                var lngArray = it.arrayLng.substring(1, it.arrayLng.length-1).split(',')
+                var polygonOptions = PolygonOptions()
+                while(i < latArray.size){
+                    polygonOptions.add(LatLng(latArray[i].toDouble(), lngArray[i].toDouble()))
+                    i++
+                }
+                mMap.addPolygon(polygonOptions).fillColor = R.color.colorPrimary
             }
         })
     }

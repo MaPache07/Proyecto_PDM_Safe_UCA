@@ -10,6 +10,7 @@ import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Rol
 import com.mapache.safeuca.database.entities.User
 import com.mapache.safeuca.database.entities.Zone
+import com.mapache.safeuca.models.ReportRetro
 import com.mapache.safeuca.service.ReportService
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -51,12 +52,8 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
 
     fun getReportPerUser(mail : String) = reportDao.getReportPerUser(mail)
 
-    fun getReportsAsync() : Deferred<Response<List<Report>>> {
+    fun getReportsAsync() : Deferred<Response<List<ReportRetro>>> {
         return ReportService.getRetrofit().getReports()
-    }
-
-    fun getZonesAsync() : Deferred<Response<List<Zone>>> {
-        return  ReportService.getRetrofit().getZones()
     }
 
     @WorkerThread

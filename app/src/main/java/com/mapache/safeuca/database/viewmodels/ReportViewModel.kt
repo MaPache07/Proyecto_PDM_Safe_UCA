@@ -55,28 +55,15 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
         val response = repository.getReportsAsync().await()
         if(response.isSuccessful) with(response){
             this.body()?.forEach {
-                this@ReportViewModel.insertReport(it)
+                this@ReportViewModel.insertZone(it.idZone)
+                val report = Report(it.id, it.name, it.danger, it.type, it.status, it.mailUser,
+                            it.description, it.lat, it.ltn, it.idZone.id, it.level, it.image)
+                this@ReportViewModel.insertReport(report)
             }
         } else with(response){
             when(this.code()){
                 404 -> {
                     Toast.makeText(app, "Reporte no encontrado", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
-
-    fun getZonesAzync() = viewModelScope.launch {
-        this@ReportViewModel.nukeZones()
-        val response = repository.getZonesAsync().await()
-        if(response.isSuccessful) with(response){
-            this.body()?.forEach {
-                this@ReportViewModel.insertZone(it)
-            }
-        } else with(response){
-            when(this.code()){
-                404 -> {
-                    Toast.makeText(app, "Zona no encontrada", Toast.LENGTH_LONG).show()
                 }
             }
         }

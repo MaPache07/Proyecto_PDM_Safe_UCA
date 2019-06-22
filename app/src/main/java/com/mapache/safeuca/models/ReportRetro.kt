@@ -1,15 +1,9 @@
-package com.mapache.safeuca.database.entities
+package com.mapache.safeuca.models
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import com.mapache.safeuca.database.entities.Zone
 import com.squareup.moshi.Json
 
-@Entity(tableName = "report_table",
-        foreignKeys = [ForeignKey(entity = Zone::class, parentColumns = ["id"], childColumns = ["idZone"])/*,
-                    ForeignKey(entity = User::class, parentColumns = ["mail"], childColumns = ["mailUser"])*/])
-data class Report(
-    @PrimaryKey
+data class ReportRetro(
     @field:Json(name = "_id") val id : String,
     @field:Json(name = "name") val name : String,
     @field:Json(name = "danger") val danger : Int,
@@ -19,7 +13,7 @@ data class Report(
     @field:Json(name = "description") val description : String,
     @field:Json(name = "lat") val lat : Double,
     @field:Json(name = "ltn") val ltn : Double,
-    @field:Json(name = "idZone") val idZone : String,
+    @field:Json(name = "idZone") val idZone : Zone,
     @field:Json(name = "level") val level : Int,
     @field:Json(name = "image") val image : String
 )
