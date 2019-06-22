@@ -69,6 +69,22 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun getZonesAzync() = viewModelScope.launch {
+        this@ReportViewModel.nukeZones()
+        val response = repository.getZonesAsync().await()
+        if(response.isSuccessful) with(response){
+            this.body()?.forEach {
+                this@ReportViewModel.insertZone(it)
+            }
+        } else with(response){
+            when(this.code()){
+                404 -> {
+                    Toast.makeText(app, "Zona no encontrada", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
     fun getReport(id : String) = repository.getReport(id)
 
     fun getZone(id : String) = repository.getZone(id)

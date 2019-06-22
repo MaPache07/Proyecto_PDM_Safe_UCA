@@ -3,13 +3,14 @@ package com.mapache.safeuca.database.daos
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mapache.safeuca.database.entities.Zone
 
 @Dao
 interface ZoneDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(zone : Zone)
 
     @Query("SELECT * FROM zone_table WHERE id = :id")

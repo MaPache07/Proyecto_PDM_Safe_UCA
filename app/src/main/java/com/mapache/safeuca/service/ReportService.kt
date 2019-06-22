@@ -15,6 +15,9 @@ interface ReportService {
     @GET("/reports")
     fun getReports() : Deferred<Response<List<ReportRetro>>>
 
+    @GET("/zones")
+    fun getZones() : Deferred<Response<List<Zone>>>
+
     companion object{
         fun getRetrofit() : ReportService{
             return Retrofit.Builder()

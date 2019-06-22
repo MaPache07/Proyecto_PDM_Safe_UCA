@@ -56,6 +56,10 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
         return ReportService.getRetrofit().getReports()
     }
 
+    fun getZonesAsync() : Deferred<Response<List<Zone>>> {
+        return  ReportService.getRetrofit().getZones()
+    }
+
     @WorkerThread
     suspend fun nukeReports(){
         return reportDao.nukeTable()

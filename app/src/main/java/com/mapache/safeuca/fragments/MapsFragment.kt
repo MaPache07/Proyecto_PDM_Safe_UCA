@@ -17,10 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
@@ -36,7 +33,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBottomSheetDialog : BottomSheetDialog
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
-    private lateinit var zone : Zone
+    private var zone : Zone? = null
     var click : newReportClick? = null
 
     companion object{
@@ -62,7 +59,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        //reportViewModel.getZonesAzync()
+        reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
 
@@ -85,7 +82,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentInitialDialog.initial_si.setOnClickListener {
-            if(inZone(marker.position)){
+            if(zone != null){
                 mBottomSheetDialog.setContentView(contentZoneDialog)
             } else{
                 click?.newReportClick(marker.position)
@@ -98,7 +95,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
-            if(zone.building != null){
+            if(zone?.building == 1){
                 mBottomSheetDialog.setContentView(contentBuildingDialog)
             } else{
                 click?.newReportClick(marker.position)
@@ -113,14 +110,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_standar))
         initMap(mMap)
         initZones(mMap)
-
         val uca = LatLng(13.6816, -89.235)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uca, 18F))
+        
+        /*mMap.setOnPolygonClickListener {
+            zone = it.tag as Zone
+        }*/
 
-        mMap.setOnMapClickListener {
-            marker = mMap.addMarker(MarkerOptions().position(it).title("Zona de riesgo"))
+        mMap.setOnMapClickListener { latLng ->
+            marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
             mBottomSheetDialog.show()
         }
     }
@@ -144,12 +145,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     polygonOptions.add(LatLng(latArray[i].toDouble(), lngArray[i].toDouble()))
                     i++
                 }
-                mMap.addPolygon(polygonOptions).fillColor = R.color.colorPrimary
+                val polygon = mMap.addPolygon(polygonOptions)
+                polygon.fillColor = Color.TRANSPARENT
+                polygon.strokeWidth = 0F
+                polygon.tag = it
+                polygon.isClickable = true
+
             }
         })
     }
-
-    fun inZone(latLng: LatLng) : Boolean{
-        return false
-    }
 }
+
+
