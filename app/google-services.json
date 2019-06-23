@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "163469032491",
+    "firebase_url": "https://proyectopdmsafeuca.firebaseio.com",
+    "project_id": "proyectopdmsafeuca",
+    "storage_bucket": "proyectopdmsafeuca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163469032491:android:99a96a7039d8df24",
+        "android_client_info": {
+          "package_name": "com.mapache.safeuca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163469032491-3toathie8hvrqh4mkr5ru275ugn3tm6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mapache.safeuca",
+            "certificate_hash": "8c9b42fbc382a69cd44c216274cc755bf7f05c99"
+          }
+        },
+        {
+          "client_id": "163469032491-bdgf5utqtu83v50bpna7li5a485q0lah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuP0kZLMaW9KCZfhaScGqhlwNkIt8RqVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163469032491-bdgf5utqtu83v50bpna7li5a485q0lah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

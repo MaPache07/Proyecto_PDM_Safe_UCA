@@ -3,7 +3,13 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/nav_items">
+        <item
+            android:id="@+id/nav_log_in"
+            android:icon="@drawable/ic_subdirectory_arrow_right_black_24dp"
+            android:title="@string/log_in"
+            android:enabled="true"/>
         <item
                 android:id="@+id/nav_home"
                 android:icon="@drawable/ic_menu_camera"
@@ -20,6 +26,11 @@
                 android:id="@+id/nav_tools"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/menu_tools"/>
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_subdirectory_arrow_left_black_24dp"
+            android:title="@string/log_out"
+            android:enabled="true"/>
     </group>
 
     <item android:title="Communicate">
