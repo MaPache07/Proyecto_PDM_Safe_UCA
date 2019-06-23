@@ -2,10 +2,7 @@ package com.mapache.safeuca.fragments
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +17,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
-import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import kotlinx.android.synthetic.main.initial_dialog.view.*
 import kotlinx.android.synthetic.main.zone_dialog.view.*
-import java.util.*
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
@@ -45,7 +40,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     interface newReportClick{
-        fun newReportClick(latLng: LatLng)
+        fun newReportClick(latLng: LatLng, level: Int)
     }
 
     override fun onAttach(context: Context?) {
@@ -85,20 +80,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             if(zone != null){
                 mBottomSheetDialog.setContentView(contentZoneDialog)
             } else{
-                click?.newReportClick(marker.position)
+                click?.newReportClick(marker.position, -1)
                 mBottomSheetDialog.dismiss()
             }
         }
 
         contentZoneDialog.zone_no.setOnClickListener {
-            click?.newReportClick(marker.position)
+            click?.newReportClick(marker.position, -1)
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
-            if(zone?.building == 1){
+            if(zone?.building == 1 && zone?.level!! > 1){
                 mBottomSheetDialog.setContentView(contentBuildingDialog)
             } else{
-                click?.newReportClick(marker.position)
+                click?.newReportClick(marker.position, -1)
             }
         }
     }
