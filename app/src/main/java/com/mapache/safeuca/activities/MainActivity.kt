@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_log_in -> {
-                //showSignInOptions()
+                showSignInOptions()
             }
             R.id.nav_home -> {
                 // Handle the camera action

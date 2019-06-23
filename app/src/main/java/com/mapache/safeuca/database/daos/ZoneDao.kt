@@ -10,7 +10,7 @@ import com.mapache.safeuca.database.entities.Zone
 @Dao
 interface ZoneDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(zone : Zone)
 
     @Query("SELECT * FROM zone_table WHERE id = :id")
