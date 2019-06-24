@@ -2,6 +2,7 @@ package com.mapache.safeuca.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.core.view.GravityCompat
@@ -12,6 +13,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -56,6 +60,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
+        if (auth.currentUser==null){
+            nav_view.bt_log_in.visibility= View.VISIBLE
+        }
+        else{
+            nav_view.bt_log_in.visibility = View.INVISIBLE
+            correo_en_nav.text = auth.currentUser!!.email.toString()
+        }
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -75,8 +86,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
+                Toast.makeText(this, "Iniciado correctamente", Toast.LENGTH_LONG).show()
                 // ...
             } else {
+                Toast.makeText(this, "Error al iniciar", Toast.LENGTH_LONG).show()
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
@@ -105,7 +118,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
@@ -132,35 +144,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_log_in -> {
-                /*val intent = Intent(this, LogInActivity::class.java)
-                //intent.putExtra("keyIdentifier", 123)
-                startActivity(intent)*/
                 showSignInOptions()
             }
-            R.id.nav_sign_up -> {
-                val intent = Intent(this, SignUpActivity::class.java)
-                //intent.putExtra("keyIdentifier", 123)
-                startActivity(intent)
-            }
-            R.id.nav_home -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_tools -> {
+            R.id.nav_settings -> {
 
             }
             R.id.nav_log_out ->{
-                correo_en_nav.text = auth.currentUser!!.email.toString()
+                //correo_en_nav.text = auth.currentUser!!.email.toString()
+                AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener {
+                        // ...
+                        Toast.makeText(this, "Cerrado correctamente", Toast.LENGTH_LONG).show()
+                    }
             }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
+            R.id.nav_dark_mode -> {
 
             }
         }

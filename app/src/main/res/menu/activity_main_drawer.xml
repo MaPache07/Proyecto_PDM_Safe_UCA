@@ -9,45 +9,29 @@
             android:id="@+id/nav_log_in"
             android:icon="@drawable/ic_subdirectory_arrow_right_black_24dp"
             android:title="@string/log_in"
-            android:enabled="true"/>
+            android:visible="false"/>
         <item
-                android:id="@+id/nav_sign_up"
-                android:icon="@drawable/ic_arrow_upward_black_24dp"
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_black_24dp"
                 android:title="@string/sign_up"
                 android:enabled="true"/>
-        <item
-                android:id="@+id/nav_home"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="@string/menu_home"/>
-        <item
-                android:id="@+id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="@string/menu_gallery"/>
-        <item
-                android:id="@+id/nav_slideshow"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="@string/menu_slideshow"/>
-        <item
-                android:id="@+id/nav_tools"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="@string/menu_tools"/>
-        <item
-            android:id="@+id/nav_log_out"
-            android:icon="@drawable/ic_subdirectory_arrow_left_black_24dp"
-            android:title="@string/log_out"
-            android:enabled="true"/>
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Misc">
         <menu>
             <item
-                    android:id="@+id/nav_share"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="@string/menu_share"/>
+                android:id="@+id/nav_log_out"
+                android:icon="@drawable/ic_subdirectory_arrow_left_black_24dp"
+                android:title="@string/log_out"
+                android:enabled="false"
+                android:visible="true"/>
             <item
-                    android:id="@+id/nav_send"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/menu_send"/>
+                android:id="@+id/nav_dark_mode"
+                android:icon="@drawable/ic_subdirectory_arrow_left_black_24dp"
+                android:title="@string/log_out"
+                android:enabled="false"
+                android:visible="true"/>
         </menu>
     </item>
 
