@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
 import kotlinx.android.synthetic.main.zone_dialog.view.*
 
@@ -42,7 +43,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     interface newReportClick{
-        fun newReportClick(latLng: LatLng, level: Int)
+        fun newReportClick(latLng: LatLng, idZone : String, level: Int)
     }
 
     override fun onAttach(context: Context) {
@@ -82,22 +83,28 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             if(zone != null){
                 mBottomSheetDialog.setContentView(contentZoneDialog)
             } else{
-                click?.newReportClick(marker.position, -1)
+                click?.newReportClick(marker.position, "id_UCA", -1)
                 mBottomSheetDialog.dismiss()
             }
         }
 
         contentZoneDialog.zone_no.setOnClickListener {
-            click?.newReportClick(marker.position, -1)
+            click?.newReportClick(marker.position, "id_UCA", -1)
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
             if(zone?.building == 1 && zone?.level!! > 1){
                 mBottomSheetDialog.setContentView(contentBuildingDialog)
             } else{
-                click?.newReportClick(marker.position, -1)
+                click?.newReportClick(marker.position, zone!!.id, -1)
             }
         }
+
+        contentBuildingDialog.building_ok.setOnClickListener {
+            click?.newReportClick(marker.position, zone!!.id, -1)
+        }
+
+
     }
 
     override fun onDetach() {
