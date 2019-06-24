@@ -15,11 +15,15 @@ import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.utilities.AppConstants
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick {
 
@@ -36,6 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        providers = Arrays.asList<AuthUI.IdpConfig>(
+            AuthUI.IdpConfig.EmailBuilder().build(),//email login
+            //AuthUI.IdpConfig.FacebookBuilder().build(), //fb login
+            AuthUI.IdpConfig.GoogleBuilder().build()) //google login
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -51,6 +60,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
         changeFragment(R.id.fragment_map, fragmentMap)
 
+    }
+
+    private fun showSignInOptions(){
+        FirebaseApp.initializeApp(this@MainActivity)
+        startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .setTheme(R.style.OpcionesInicioSesion)
+            .build(),MY_REQUEST_CODE)
     }
 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
@@ -92,9 +109,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_log_in -> {
-                val intent = Intent(this, LogInActivity::class.java)
+                /*val intent = Intent(this, LogInActivity::class.java)
                 //intent.putExtra("keyIdentifier", 123)
-                startActivity(intent)
+                startActivity(intent)*/
+                showSignInOptions()
             }
             R.id.nav_sign_up -> {
                 val intent = Intent(this, SignUpActivity::class.java)

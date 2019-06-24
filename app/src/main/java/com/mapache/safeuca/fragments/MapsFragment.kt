@@ -45,7 +45,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         fun newReportClick(latLng: LatLng, level: Int)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is newReportClick) click = context
     }
