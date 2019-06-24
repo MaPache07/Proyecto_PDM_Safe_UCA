@@ -17,4 +17,5 @@
     <string name="dialogZone">¿Esta es la ubicación de la zona de riesgo?</string>
     <string name="log_out">Log out</string>
     <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
 </resources>

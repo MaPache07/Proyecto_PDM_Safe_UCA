@@ -1,8 +1,8 @@
 package com.mapache.safeuca.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -11,30 +11,28 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.nav_header_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick {
 
     private lateinit var fragmentMap : MapsFragment
+    private lateinit var auth: FirebaseAuth
+
     lateinit var providers : List<AuthUI.IdpConfig>
     val MY_REQUEST_CODE : Int = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        auth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -53,39 +51,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
         changeFragment(R.id.fragment_map, fragmentMap)
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-        providers = Arrays.asList<AuthUI.IdpConfig>(
-                AuthUI.IdpConfig.EmailBuilder().build(),//email login
-                //AuthUI.IdpConfig.FacebookBuilder().build(), //fb login
-                AuthUI.IdpConfig.GoogleBuilder().build()) //google login
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        //val cerrar_sesion : Button = findViewById(R.id.nav_log_out)
-
-        if (requestCode == MY_REQUEST_CODE){
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK){
-                val user = FirebaseAuth.getInstance().currentUser
-                Toast.makeText(this, ""+user!!.email,Toast.LENGTH_LONG).show()
-
-                //cerrar_sesion.isEnabled=true
-            }
-            else{
-                Toast.makeText(this, ""+response!!.error!!.message,Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-    private fun showSignInOptions(){
-        FirebaseApp.initializeApp(this@MainActivity)
-        startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .setTheme(R.style.OpcionesInicioSesion)
-                .build(),MY_REQUEST_CODE)
-    }
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
 
@@ -98,6 +64,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
@@ -124,7 +91,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_log_in -> {
-                //showSignInOptions()
+                val intent = Intent(this, LogInActivity::class.java)
+                //intent.putExtra("keyIdentifier", 123)
+                startActivity(intent)
+            }
+            R.id.nav_sign_up -> {
+                val intent = Intent(this, SignUpActivity::class.java)
+                //intent.putExtra("keyIdentifier", 123)
+                startActivity(intent)
             }
             R.id.nav_home -> {
                 // Handle the camera action
@@ -139,13 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_log_out ->{
-                AuthUI.getInstance().signOut(this@MainActivity)
-                        .addOnCompleteListener{
-                            //showSignInOptions()
-                        }
-                        .addOnFailureListener {
-                            e-> Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
-                        }
+                correo_en_nav.text = auth.currentUser!!.email.toString()
             }
             R.id.nav_share -> {
 
