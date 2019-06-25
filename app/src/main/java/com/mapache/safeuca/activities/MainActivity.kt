@@ -29,7 +29,9 @@ import com.mapache.safeuca.R
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, MapsFragment.changeTheme {
@@ -68,13 +70,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
         changeTheme()
-        showSignInOptions()
         if(auth.currentUser != null){
             val user = FirebaseAuth.getInstance().currentUser
             Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
-            //correo_en_nav.text = user!!.email
-            nav_view.menu[0].isVisible = false
-            nav_view.menu[2].isVisible = true
+            if (correo_en_nav == null){
+                Log.d("gol","cualquier mensaje")
+            }
+            navView.menu[0].isVisible = false
+            navView.menu[2].isVisible = true
         }
     }
 
@@ -136,6 +139,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        if(auth.currentUser != null){
+            correo_en_nav.text = auth.currentUser!!.email
+        }
         return true
     }
 
@@ -159,24 +165,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_log_out ->{
-                //correo_en_nav.text = auth.currentUser!!.email.toString()
+                correo_en_nav.text = "No hay seesión iniciada"
+                nav_view.menu[0].isVisible = true
                 AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener {
                         // ...
                         Toast.makeText(this, "Cerrado correctamente", Toast.LENGTH_LONG).show()
                     }
+                nav_view.menu[2].isVisible = false
             }
             R.id.nav_dark_mode -> {
                 if (flag == "0"){
                     tv_escondido.text = "1"
                     changeTheme()
                     flag = "1"
+                    nav_view.menu[3].isVisible = false
+                    nav_view.menu[4].isVisible = true
                 }
-                else{
+            }
+            R.id.nav_bright_mode -> {
+                if (flag == "1"){
                     tv_escondido.text = "0"
                     changeTheme()
                     flag = "0"
+                    nav_view.menu[3].isVisible = true
+                    nav_view.menu[4].isVisible = false
                 }
             }
         }

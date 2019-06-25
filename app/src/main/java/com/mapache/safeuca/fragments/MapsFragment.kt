@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
@@ -32,6 +34,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
     private lateinit var flag : TextView
+    private lateinit var auth: FirebaseAuth
     var arrayPolygon = ArrayList<Polygon>()
     lateinit var polygon : Polygon
     lateinit var zone : Zone
@@ -68,6 +71,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_maps,container,false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        auth = FirebaseAuth.getInstance()
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         //reportViewModel.getZonesAzync()
@@ -155,9 +159,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uca, 18F))
 
         mMap.setOnMapClickListener { latLng ->
-            marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
-            mBottomSheetDialog.setContentView(contentInitialDialog)
-            mBottomSheetDialog.show()
+            if (auth.currentUser != null){
+                marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
+                mBottomSheetDialog.setContentView(contentInitialDialog)
+                mBottomSheetDialog.show()
+            }
+            else{
+                Toast.makeText(context, "Inicia sesion para reportar", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
