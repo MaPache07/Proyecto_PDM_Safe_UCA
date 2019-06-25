@@ -16,6 +16,7 @@ class NewReportActivity : AppCompatActivity() {
     val arrayDanger : Array<String> = arrayOf("Bajo", "Medio", "Alto")
     val arrayType : Array<String> = arrayOf("Reporte", "Mantenimiento")
     lateinit var dangerSelected : String
+    lateinit var typeSelected : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +31,20 @@ class NewReportActivity : AppCompatActivity() {
 
         spinner_danger.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                dangerSelected = parent?.getItemAtPosition(0) as String
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                dangerSelected = parent?.getItemAtPosition(position) as String
+            }
+        }
 
+        spinner_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                typeSelected = parent?.getItemAtPosition(0) as String
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                dangerSelected = parent?.getItemAtPosition(position) as String
+                typeSelected = parent?.getItemAtPosition(position) as String
             }
 
         }
