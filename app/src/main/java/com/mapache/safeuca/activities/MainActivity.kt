@@ -1,9 +1,11 @@
 package com.mapache.safeuca.activities
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -14,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
+import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -25,6 +29,7 @@ import com.mapache.safeuca.R
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, MapsFragment.changeTheme {
@@ -44,6 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         auth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        FirebaseApp.initializeApp(this@MainActivity)
 
         providers = Arrays.asList<AuthUI.IdpConfig>(
             AuthUI.IdpConfig.EmailBuilder().build(),//email login
@@ -61,10 +67,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        changeTheme()
 
-        fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
-        changeFragment(R.id.fragment_map, fragmentMap)
-        tv_escondido.text = "0"
+        if(auth.currentUser != null){
+            val user = FirebaseAuth.getInstance().currentUser
+            Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
+            //correo_en_nav.text = user!!.email
+            nav_view.menu[0].isVisible = false
+            nav_view.menu[2].isVisible = true
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -77,9 +88,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(this, "Iniciado correctamente", Toast.LENGTH_LONG).show()
+                correo_en_nav.text = user!!.email
+                nav_view.menu[0].isVisible = false
+                nav_view.menu[2].isVisible = true
                 // ...
             } else {
-                Toast.makeText(this, "Error al iniciar", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error al iniciar " + response, Toast.LENGTH_LONG).show()
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
@@ -89,7 +103,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showSignInOptions(){
-        FirebaseApp.initializeApp(this@MainActivity)
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .setTheme(R.style.OpcionesInicioSesion)
