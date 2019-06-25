@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,8 +21,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
+import com.mapache.safeuca.activities.MainActivity
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
 import kotlinx.android.synthetic.main.zone_dialog.view.*
@@ -31,6 +35,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBottomSheetDialog : BottomSheetDialog
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
+    private lateinit var flag : TextView
     private var zone : Zone? = null
     var click : newReportClick? = null
 
@@ -42,6 +47,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    interface changeTheme{
+        fun changeTheme()
+    }
     interface newReportClick{
         fun newReportClick(latLng: LatLng, idZone : String, level: Int)
     }
@@ -57,9 +65,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        reportViewModel.getZonesAzync()
+        //reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
+        flag = activity!!.findViewById(R.id.tv_escondido)
 
         val contentDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
         val contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
@@ -114,7 +123,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_standar))
         initMap(mMap)
         initZones(mMap)
         val uca = LatLng(13.6816, -89.235)

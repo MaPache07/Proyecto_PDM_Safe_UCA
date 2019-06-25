@@ -13,7 +13,7 @@
         <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings_black_24dp"
-                android:title="@string/sign_up"
+                android:title="@string/settings"
                 android:enabled="true"/>
 
     </group>
@@ -28,9 +28,9 @@
                 android:visible="true"/>
             <item
                 android:id="@+id/nav_dark_mode"
-                android:icon="@drawable/ic_subdirectory_arrow_left_black_24dp"
-                android:title="@string/log_out"
-                android:enabled="false"
+                android:icon="@drawable/ic_invert_colors_black_24dp"
+                android:title="Dark mode"
+                android:enabled="true"
                 android:visible="true"/>
         </menu>
     </item>

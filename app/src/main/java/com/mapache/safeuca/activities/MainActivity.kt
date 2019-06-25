@@ -13,8 +13,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
@@ -27,17 +25,16 @@ import com.mapache.safeuca.R
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
-import kotlinx.android.synthetic.main.nav_header_main.view.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, MapsFragment.changeTheme {
 
     private lateinit var fragmentMap : MapsFragment
     private lateinit var auth: FirebaseAuth
 
     lateinit var providers : List<AuthUI.IdpConfig>
     val MY_REQUEST_CODE : Int = 123
+    var flag : String = "0"
 
 
 
@@ -60,13 +57,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        if (auth.currentUser==null){
-            nav_view.bt_log_in.visibility= View.VISIBLE
-        }
-        else{
-            nav_view.bt_log_in.visibility = View.INVISIBLE
-            correo_en_nav.text = auth.currentUser!!.email.toString()
-        }
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -74,7 +64,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
         changeFragment(R.id.fragment_map, fragmentMap)
-
+        tv_escondido.text = "0"
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -104,6 +94,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .setAvailableProviders(providers)
             .setTheme(R.style.OpcionesInicioSesion)
             .build(),MY_REQUEST_CODE)
+    }
+
+    override fun changeTheme(){
+        fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
+        changeFragment(R.id.fragment_map, fragmentMap)
     }
 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
@@ -160,7 +155,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
             }
             R.id.nav_dark_mode -> {
-
+                if (flag == "0"){
+                    tv_escondido.text = "1"
+                    changeTheme()
+                    flag = "1"
+                }
+                else{
+                    tv_escondido.text = "0"
+                    changeTheme()
+                    flag = "0"
+                }
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
