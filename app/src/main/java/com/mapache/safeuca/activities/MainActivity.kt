@@ -19,6 +19,8 @@ import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.maps.model.LatLng
@@ -27,6 +29,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.fragments.MapsFragment
+import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -38,12 +41,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var fragmentMap : MapsFragment
     private lateinit var auth: FirebaseAuth
+    private lateinit var reportsFragment: ReportsFragment
 
     lateinit var providers : List<AuthUI.IdpConfig>
     val MY_REQUEST_CODE : Int = 123
     var flag : String = "0"
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +82,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navView.menu[2].isVisible = true
         }
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -94,6 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 correo_en_nav.text = user!!.email
                 nav_view.menu[0].isVisible = false
                 nav_view.menu[2].isVisible = true
+                nav_view.menu[5].isVisible = true
                 // ...
             } else {
                 Toast.makeText(this, "Error al iniciar " + response, Toast.LENGTH_LONG).show()
@@ -192,6 +194,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     nav_view.menu[3].isVisible = true
                     nav_view.menu[4].isVisible = false
                 }
+            }
+            R.id.nav_reports -> {
+                reportsFragment = ReportsFragment.newInstance()
+                changeFragment(R.id.fragment_map, reportsFragment)
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

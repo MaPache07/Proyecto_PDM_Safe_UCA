@@ -31,6 +31,12 @@
             android:title="Bright mode"
             android:enabled="true"
             android:visible="false"/>
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:title="My reports"
+            android:enabled="true"
+            android:visible="false"/>
 
     </group>
 

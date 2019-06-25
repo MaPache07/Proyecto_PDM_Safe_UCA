@@ -93,7 +93,7 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun getRol(id : Int) = repository.getRol(id)
 
-    fun getReportPerUser(mail : String) = repository.getReportPerUser(mail)
+    fun getReportPerUser(mail : String?) = repository.getReportPerUser(mail!!)
 
     private suspend fun nukeReports() = repository.nukeReports()
 
