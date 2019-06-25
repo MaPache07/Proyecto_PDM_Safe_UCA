@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/normalText"
-        android:text="@string/zoneDialog"/>
+        android:text=""/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +26,6 @@
             android:id="@+id/zone_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="no"/>
+            android:text="No"/>
     </LinearLayout>
 </LinearLayout>

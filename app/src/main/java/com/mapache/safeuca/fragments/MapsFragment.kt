@@ -1,11 +1,8 @@
 package com.mapache.safeuca.fragments
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.R
-import com.mapache.safeuca.activities.MainActivity
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
 import kotlinx.android.synthetic.main.zone_dialog.*
@@ -40,12 +35,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     var arrayPolygon = ArrayList<Polygon>()
     lateinit var polygon : Polygon
     lateinit var zone : Zone
+    lateinit var contentInitialDialog : View
+    lateinit var contentZoneDialog : View
+    lateinit var contentBuildingDialog : View
+    var flagZone = false
+    var flagBuilding = false
     var click : newReportClick? = null
 
     companion object{
-        fun newInstance (mBottomSheetDialog: BottomSheetDialog): MapsFragment {
+        fun newInstance (mBottomSheetDialog: BottomSheetDialog/*, binding: ZoneDialogBinding*/): MapsFragment {
             val newFragment = MapsFragment()
             newFragment.mBottomSheetDialog = mBottomSheetDialog
+            //newFragment.binding = binding
             return  newFragment
         }
     }
@@ -67,24 +68,33 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_maps,container,false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         //reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
         flag = activity!!.findViewById(R.id.tv_escondido)
 
-        val contentDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
-        val contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
-        val contentBuildingDialog = layoutInflater.inflate(R.layout.building_dialog, null)
+        contentInitialDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
+        contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
+        contentBuildingDialog = layoutInflater.inflate(R.layout.building_dialog, null)
 
-        mBottomSheetDialog.setContentView(contentDialog)
-        setOnClickListeners(contentDialog, contentZoneDialog, contentBuildingDialog)
+        setOnClickListeners()
         return view
     }
 
-    fun setOnClickListeners(contentInitialDialog : View, contentZoneDialog: View, contentBuildingDialog : View){
+    fun setOnClickListeners(){
         mBottomSheetDialog.setOnDismissListener{
             marker.remove()
+            (contentInitialDialog.parent as ViewGroup).removeAllViews()
+            if(flagZone){
+                (contentZoneDialog.parent as ViewGroup).removeAllViews()
+                flagZone = false
+            }
+            if(flagBuilding){
+                (contentBuildingDialog.parent as ViewGroup).removeAllViews()
+                flagBuilding = false
+            }
         }
 
         contentInitialDialog.initial_no.setOnClickListener {
@@ -94,9 +104,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         contentInitialDialog.initial_si.setOnClickListener {
             if(inZone(marker.position)){
                 zone = polygon.tag as Zone
-                val text = getString(R.string.zoneDialog) + zone.name + "?"
+                val text = getString(R.string.zoneDialog) + " " + zone.name + "?"
                 mBottomSheetDialog.setContentView(contentZoneDialog)
-                zone_dialog_tv.text = text
+                flagZone = true
+                mBottomSheetDialog.zone_dialog_tv.text = text
             } else{
                 click?.newReportClick(marker.position, "id_UCA", -1)
                 mBottomSheetDialog.dismiss()
@@ -110,13 +121,16 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         contentZoneDialog.zone_si.setOnClickListener {
             if(zone.building == 1 && zone.level > 1){
                 mBottomSheetDialog.setContentView(contentBuildingDialog)
+                flagBuilding = true
             } else{
                 click?.newReportClick(marker.position, zone.id, -1)
+                mBottomSheetDialog.dismiss()
             }
         }
 
         contentBuildingDialog.building_ok.setOnClickListener {
             click?.newReportClick(marker.position, zone.id, -1)
+            mBottomSheetDialog.dismiss()
         }
 
 
@@ -142,6 +156,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener { latLng ->
             marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
+            mBottomSheetDialog.setContentView(contentInitialDialog)
             mBottomSheetDialog.show()
         }
     }
