@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -22,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import kotlinx.android.synthetic.main.building_dialog.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
 import kotlinx.android.synthetic.main.zone_dialog.*
@@ -41,6 +44,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     lateinit var contentInitialDialog : View
     lateinit var contentZoneDialog : View
     lateinit var contentBuildingDialog : View
+    var buildingSelected : Int = 0
     var flagZone = false
     var flagBuilding = false
     var click : newReportClick? = null
@@ -74,7 +78,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         auth = FirebaseAuth.getInstance()
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        //reportViewModel.getZonesAzync()
+        reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
         flag = activity!!.findViewById(R.id.tv_escondido)
@@ -125,6 +129,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         contentZoneDialog.zone_si.setOnClickListener {
             if(zone.building == 1 && zone.level > 1){
                 mBottomSheetDialog.setContentView(contentBuildingDialog)
+                mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, (1..zone.level).toList().toTypedArray())
                 flagBuilding = true
             } else{
                 click?.newReportClick(marker.position, zone.id, -1)
@@ -133,11 +138,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentBuildingDialog.building_ok.setOnClickListener {
-            click?.newReportClick(marker.position, zone.id, -1)
+            click?.newReportClick(marker.position, zone.id, buildingSelected)
             mBottomSheetDialog.dismiss()
         }
 
+        contentBuildingDialog.spinner_building.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                buildingSelected = parent?.getItemAtPosition(0) as Int
+            }
 
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                buildingSelected = parent?.getItemAtPosition(position) as Int
+            }
+
+        }
     }
 
     override fun onDetach() {

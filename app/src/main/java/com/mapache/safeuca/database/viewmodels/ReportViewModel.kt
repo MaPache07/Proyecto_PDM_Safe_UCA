@@ -52,6 +52,7 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun getReportsAsync() = viewModelScope.launch {
         this@ReportViewModel.nukeReports()
+        this@ReportViewModel.nukeZones()
         val response = repository.getReportsAsync().await()
         if(response.isSuccessful) with(response){
             this.body()?.forEach {
@@ -70,7 +71,6 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     fun getZonesAzync() = viewModelScope.launch {
-        this@ReportViewModel.nukeZones()
         val response = repository.getZonesAsync().await()
         if(response.isSuccessful) with(response){
             this.body()?.forEach {
