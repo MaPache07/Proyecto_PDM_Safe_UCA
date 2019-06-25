@@ -25,10 +25,11 @@
             android:contentDescription="@string/nav_header_desc"
             android:id="@+id/imageView"/>
         <TextView
+            android:id="@+id/nombre_en_nav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/generalPadding"
-            android:text="Nombre"
+            android:text="Usuario"
             android:textSize="@dimen/normalText"/>
     </LinearLayout>
 

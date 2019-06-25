@@ -42,14 +42,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var fragmentMap : MapsFragment
     private lateinit var auth: FirebaseAuth
     private lateinit var reportsFragment: ReportsFragment
-
     lateinit var providers : List<AuthUI.IdpConfig>
     val MY_REQUEST_CODE : Int = 123
-    var flag : String = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         auth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -67,6 +66,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
+        val logIn = nav_view.menu[0]
+        val map = nav_view.menu[1]
+        val myReports = nav_view.menu[2]
+        val allReports = nav_view.menu[3]
+        val dark = nav_view.menu[4]
+        val bright = nav_view.menu[5]
+        val logout = nav_view.menu[6]
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -75,27 +81,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(auth.currentUser != null){
             val user = FirebaseAuth.getInstance().currentUser
             Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
-            if (correo_en_nav == null){
-                Log.d("gol","cualquier mensaje")
-            }
-            navView.menu[0].isVisible = false
-            navView.menu[2].isVisible = true
+            logIn.isVisible = false
+            logout.isVisible = true
+            myReports.isVisible = true
+            allReports.isVisible = true
+            dark.isVisible = true
+            bright.isVisible = false
         }
+        map.isVisible = false
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == MY_REQUEST_CODE) {
             val response = IdpResponse.fromResultIntent(data)
-
+            val logIn = nav_view.menu[0]
+            val map = nav_view.menu[1]
+            val myReports = nav_view.menu[2]
+            val allReports = nav_view.menu[3]
+            val dark = nav_view.menu[4]
+            val bright = nav_view.menu[5]
+            val logout = nav_view.menu[6]
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(this, "Iniciado correctamente", Toast.LENGTH_LONG).show()
                 correo_en_nav.text = user!!.email
-                nav_view.menu[0].isVisible = false
-                nav_view.menu[2].isVisible = true
-                nav_view.menu[5].isVisible = true
+                nombre_en_nav.text = user!!.displayName
+                logIn.isVisible = false
+                logout.isVisible = true
+                myReports.isVisible = true
+                allReports.isVisible = true
+
                 // ...
             } else {
                 Toast.makeText(this, "Error al iniciar " + response, Toast.LENGTH_LONG).show()
@@ -140,9 +157,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
+        val logIn = nav_view.menu[0]
+        val map = nav_view.menu[1]
+        val myReports = nav_view.menu[2]
+        val allReports = nav_view.menu[3]
+        val dark = nav_view.menu[4]
+        val bright = nav_view.menu[5]
+        val logout = nav_view.menu[6]
         menuInflater.inflate(R.menu.main, menu)
         if(auth.currentUser != null){
             correo_en_nav.text = auth.currentUser!!.email
+            allReports.isVisible = true
+            myReports.isVisible = true
+            nombre_en_nav.text = auth.currentUser!!.displayName
+            dark.isVisible = true
+        }
+        else{
+            allReports.isVisible = true
+            myReports.isVisible = false
+            dark.isVisible = true
         }
         return true
     }
@@ -159,45 +192,92 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
+        val logIn = nav_view.menu[0]
+        val map = nav_view.menu[1]
+        val myReports = nav_view.menu[2]
+        val allReports = nav_view.menu[3]
+        val dark = nav_view.menu[4]
+        val bright = nav_view.menu[5]
+        val logout = nav_view.menu[6]
         when (item.itemId) {
             R.id.nav_log_in -> {
                 showSignInOptions()
             }
-            R.id.nav_settings -> {
-
-            }
             R.id.nav_log_out ->{
-                correo_en_nav.text = "No hay seesión iniciada"
-                nav_view.menu[0].isVisible = true
                 AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener {
-                        // ...
                         Toast.makeText(this, "Cerrado correctamente", Toast.LENGTH_LONG).show()
+                        correo_en_nav.text = "No hay sesión iniciada"
+                        nombre_en_nav.text = "Usuario"
+                        logIn.isVisible = true
+                        map.isVisible = false
+                        logout.isVisible = false
+                        myReports.isVisible = false
+                        allReports.isVisible = true
+                        if (tv_escondido.text == "0"){
+                            dark.isVisible = true
+                            bright.isVisible = false
+                            changeTheme()
+                        }
+                        else{
+                            dark.isVisible = false
+                            bright.isVisible = true
+                            changeTheme()
+                        }
                     }
-                nav_view.menu[2].isVisible = false
             }
             R.id.nav_dark_mode -> {
-                if (flag == "0"){
+                if (tv_escondido.text == "0"){
                     tv_escondido.text = "1"
                     changeTheme()
-                    flag = "1"
-                    nav_view.menu[3].isVisible = false
-                    nav_view.menu[4].isVisible = true
+                    dark.isVisible = false
+                    bright.isVisible = true
                 }
             }
             R.id.nav_bright_mode -> {
-                if (flag == "1"){
+                if (tv_escondido.text == "1"){
                     tv_escondido.text = "0"
                     changeTheme()
-                    flag = "0"
-                    nav_view.menu[3].isVisible = true
-                    nav_view.menu[4].isVisible = false
+                    dark.isVisible = true
+                    bright.isVisible = false
                 }
             }
-            R.id.nav_reports -> {
+            R.id.nav_my_reports -> {
                 reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
+                tv_escondido2.text = "0"
+                dark.isVisible = false
+                bright.isVisible = false
+                map.isVisible = true
+            }
+            R.id.nav_all_reports -> {
+                reportsFragment = ReportsFragment.newInstance()
+                changeFragment(R.id.fragment_map, reportsFragment)
+                tv_escondido2.text = "1"
+                dark.isVisible = false
+                bright.isVisible = false
+                map.isVisible = true
+            }
+            R.id.nav_map -> {
+                changeTheme()
+                if(tv_escondido.text == "0"){
+                    dark.isVisible = true
+                    bright.isVisible = false
+                }
+                else{
+                    bright.isVisible = true
+                    dark.isVisible = false
+                }
+                if (auth.currentUser != null){
+                    allReports.isVisible = true
+                    myReports.isVisible = true
+                }
+                else{
+                    allReports.isVisible = true
+                    myReports.isVisible = false
+                }
+                map.isVisible = false
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

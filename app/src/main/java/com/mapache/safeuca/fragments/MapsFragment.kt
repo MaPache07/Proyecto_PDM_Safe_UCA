@@ -147,7 +147,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        if (flag.text.toString()== "0"){
+        if (flag.text== "0"){
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_standar))
         }
         else{
