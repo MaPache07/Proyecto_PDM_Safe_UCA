@@ -123,6 +123,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        if (flag.text.toString()== "0"){
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_standar))
+        }
+        else{
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_night))
+        }
         initMap(mMap)
         initZones(mMap)
         val uca = LatLng(13.6816, -89.235)
