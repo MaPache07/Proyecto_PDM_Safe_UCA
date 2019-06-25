@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:hint="hola"
+            android:text="ejemplo@gmail.com"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 </LinearLayout>

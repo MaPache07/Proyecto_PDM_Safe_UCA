@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
         changeTheme()
-
+        showSignInOptions()
         if(auth.currentUser != null){
             val user = FirebaseAuth.getInstance().currentUser
             Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
