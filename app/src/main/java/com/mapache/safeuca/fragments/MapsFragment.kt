@@ -27,6 +27,7 @@ import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
+import kotlinx.android.synthetic.main.zone_dialog.*
 import kotlinx.android.synthetic.main.zone_dialog.view.*
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -36,7 +37,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
     private lateinit var flag : TextView
-    private var zone : Zone? = null
+    var arrayPolygon = ArrayList<Polygon>()
+    lateinit var polygon : Polygon
+    lateinit var zone : Zone
     var click : newReportClick? = null
 
     companion object{
@@ -89,8 +92,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentInitialDialog.initial_si.setOnClickListener {
-            if(zone != null){
+            if(inZone(marker.position)){
+                zone = polygon.tag as Zone
+                val text = getString(R.string.zoneDialog) + zone.name + "?"
                 mBottomSheetDialog.setContentView(contentZoneDialog)
+                zone_dialog_tv.text = text
             } else{
                 click?.newReportClick(marker.position, "id_UCA", -1)
                 mBottomSheetDialog.dismiss()
@@ -102,15 +108,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
-            if(zone?.building == 1 && zone?.level!! > 1){
+            if(zone.building == 1 && zone.level > 1){
                 mBottomSheetDialog.setContentView(contentBuildingDialog)
             } else{
-                click?.newReportClick(marker.position, zone!!.id, -1)
+                click?.newReportClick(marker.position, zone.id, -1)
             }
         }
 
         contentBuildingDialog.building_ok.setOnClickListener {
-            click?.newReportClick(marker.position, zone!!.id, -1)
+            click?.newReportClick(marker.position, zone.id, -1)
         }
 
 
@@ -133,10 +139,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         initZones(mMap)
         val uca = LatLng(13.6816, -89.235)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uca, 18F))
-        
-        /*mMap.setOnPolygonClickListener {
-            zone = it.tag as Zone
-        }*/
 
         mMap.setOnMapClickListener { latLng ->
             marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
@@ -167,10 +169,36 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 polygon.fillColor = Color.TRANSPARENT
                 polygon.strokeWidth = 0F
                 polygon.tag = it
-                polygon.isClickable = true
-
+                arrayPolygon.add(polygon)
             }
         })
+    }
+
+    fun inZone(cor : LatLng) : Boolean{
+        for(pp in arrayPolygon){
+            var angulo = 0.0
+            var i = 0
+            while(i < pp.points.size-1){
+                var j = 1
+                if(i == pp.points.size-2){
+                    j = -i
+                }
+                var x1 = cor.latitude - pp.points[i].latitude
+                var y1 = cor.longitude - pp.points[i].longitude
+                var x2 = cor.latitude - pp.points[i+j].latitude
+                var y2 = cor.longitude - pp.points[i+j].longitude
+                var xy1 = x1*x2 + y1*y2
+                var xy2 = Math.sqrt(Math.pow(x1, 2.0)+Math.pow(y1, 2.0))*Math.sqrt(Math.pow(x2, 2.0)+Math.pow(y2, 2.0))
+                angulo += Math.acos(xy1/xy2)
+                i++
+            }
+            angulo = Math.floor(angulo*1e4)/1e4
+            if(angulo == 6.2831){
+                polygon = pp
+                return true
+            }
+        }
+        return false
     }
 }
 

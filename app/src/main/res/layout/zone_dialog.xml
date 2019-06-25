@@ -6,11 +6,12 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/generalPadding">
     <TextView
+        android:id="@+id/zone_dialog_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/normalText"
-        android:text="La zona de riesgo se encuentra en ?"/>
+        android:text="@string/zoneDialog"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
