@@ -78,7 +78,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         auth = FirebaseAuth.getInstance()
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        //reportViewModel.getZonesAzync()
+        reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
         flag = activity!!.findViewById(R.id.tv_escondido)
@@ -138,7 +138,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentBuildingDialog.building_ok.setOnClickListener {
-            click?.newReportClick(marker.position, zone.id, -1)
+            click?.newReportClick(marker.position, zone.id, buildingSelected)
             mBottomSheetDialog.dismiss()
         }
 

@@ -2,12 +2,17 @@ package com.mapache.safeuca.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.model.LatLng
 import com.mapache.safeuca.R
+import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_new_report.*
 
 class NewReportActivity : AppCompatActivity() {
@@ -17,12 +22,31 @@ class NewReportActivity : AppCompatActivity() {
     val arrayType : Array<String> = arrayOf("Reporte", "Mantenimiento")
     lateinit var dangerSelected : String
     lateinit var typeSelected : String
+    lateinit var latLng : LatLng
+    lateinit var idZone : String
+    var level : Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_report)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+
+        latLng = intent?.extras?.getParcelable(AppConstants.LATLNT_KEY)!!
+        idZone = intent?.extras?.getString(AppConstants.IDZONE_KEY)!!
+        level = intent?.extras?.getInt(AppConstants.LEVEL_KEY)!!
+
         initSpinners()
+        setOnClickListeners()
+    }
+
+    fun setOnClickListeners(){
+        new_report_ok.setOnClickListener {
+            if(TextUtils.isEmpty(new_report_name.text) && TextUtils.isEmpty(new_report_description.text)){
+                Toast.makeText(applicationContext, "Ingrese todos los datos", Toast.LENGTH_LONG).show()
+            } else{
+                //val report = Report("", new_report_name.text.trim().toString(), 1, typeSelected, )
+            }
+        }
     }
 
     fun initSpinners(){
