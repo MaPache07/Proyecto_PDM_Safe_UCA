@@ -1,5 +1,7 @@
 package com.mapache.safeuca.activities
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -57,7 +59,8 @@ class NewReportActivity : AppCompatActivity() {
                     "No Resuelto", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
                     latLng.latitude, latLng.longitude, zone, level)
                 reportViewModel.postReport(retroRepo)
-
+                setResult(Activity.RESULT_OK)
+                finish()
 
                     /*.enqueue(object : Callback<DefaultResponse>{
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
@@ -67,7 +70,6 @@ class NewReportActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Se reporto correctamente", Toast.LENGTH_LONG).show()
                     }
                 })*/
-                finish()
             }
         }
     }

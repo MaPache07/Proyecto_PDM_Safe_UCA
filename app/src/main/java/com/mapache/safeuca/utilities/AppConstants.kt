@@ -6,4 +6,5 @@ object AppConstants {
     val LEVEL_KEY = "LevelKey"
     val ZONE_KEY = "IdZoneKey"
     val BOTTOM_SHEET_DIALOG_kEY = "BottomSheetDialogKey"
+    val REQUEST_CODE = 7
 }

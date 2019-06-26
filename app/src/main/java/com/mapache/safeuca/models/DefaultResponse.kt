@@ -1,9 +1,8 @@
 package com.mapache.safeuca.models
 
-data class DefaultResponse(
-    val error : Message
-)
+import com.mapache.safeuca.database.entities.Report
 
-data class Message(
-    val message : String
+data class DefaultResponse(
+    val message : String,
+    val createdReport : Report
 )
