@@ -122,6 +122,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // ...
             }
         }
+        if(requestCode == AppConstants.REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                Log.d("Hola", "Entro")
+                changeTheme()
+            }
+        }
     }
 
     private fun showSignInOptions(){
@@ -143,8 +149,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bundle.putParcelable(AppConstants.LATLNT_KEY, latLng)
         bundle.putParcelable(AppConstants.ZONE_KEY, zone)
         bundle.putInt(AppConstants.LEVEL_KEY, level)
-        startActivity(Intent(this, NewReportActivity::class.java).putExtras(bundle))
+        startActivityForResult(Intent(this, NewReportActivity::class.java).putExtras(bundle), AppConstants.REQUEST_CODE)
     }
+
+
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

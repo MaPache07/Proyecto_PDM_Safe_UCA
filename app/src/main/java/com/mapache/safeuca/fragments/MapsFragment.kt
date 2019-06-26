@@ -80,8 +80,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         mBottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
-        reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
+        reportViewModel.getZonesAzync()
 
         flag = activity!!.findViewById(R.id.tv_escondido)
 
@@ -129,10 +129,22 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
-            if(zone.building == 1 && zone.level > 1){
-                mBottomSheetDialog.setContentView(contentBuildingDialog)
-                mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, (1..zone.level).toList().toTypedArray())
-                flagBuilding = true
+            if(zone.building == 1){
+                if(zone.level > 1){
+                    mBottomSheetDialog.setContentView(contentBuildingDialog)
+                    mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, (1..zone.level).toList().toTypedArray())
+                    flagBuilding = true
+                }
+                else if(zone.level < -1){
+                    mBottomSheetDialog.setContentView(contentBuildingDialog)
+                    var arrayList = ArrayList<Int>()
+                    var i = 0
+                    while(i < zone.level*-1){
+                        arrayList.add(i)
+                        i++
+                    }
+                    mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, arrayList)
+                }
             } else{
                 click?.newReportClick(marker.position, zone, -1)
                 mBottomSheetDialog.dismiss()
