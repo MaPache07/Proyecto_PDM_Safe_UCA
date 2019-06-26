@@ -144,10 +144,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
 
-    override fun newReportClick(latLng: LatLng, zone : Zone, level: Int) {
+    override fun newReportClick(latLng: LatLng, idZone : String, level: Int) {
         var bundle = Bundle()
         bundle.putParcelable(AppConstants.LATLNT_KEY, latLng)
-        bundle.putParcelable(AppConstants.ZONE_KEY, zone)
+        bundle.putString(AppConstants.ZONE_KEY, idZone)
         bundle.putInt(AppConstants.LEVEL_KEY, level)
         startActivityForResult(Intent(this, NewReportActivity::class.java).putExtras(bundle), AppConstants.REQUEST_CODE)
     }
