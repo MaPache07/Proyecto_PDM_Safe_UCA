@@ -70,7 +70,7 @@ class ReportsFragment : Fragment() {
     fun onClicked(item : Report){
         val extras = Bundle()
         extras.putString("name",item.name)
-        extras.putInt("danger",item.danger)
+        extras.putString("danger",item.danger)
         extras.putString("type",item.type)
         extras.putString("status",item.status)
         extras.putString("mail",item.mailUser)

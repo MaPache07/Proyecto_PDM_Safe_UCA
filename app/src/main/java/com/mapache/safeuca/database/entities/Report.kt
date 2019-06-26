@@ -12,7 +12,7 @@ data class Report(
     @PrimaryKey
     @field:Json(name = "_id") val id : String,
     @field:Json(name = "name") val name : String,
-    @field:Json(name = "danger") val danger : Int,
+    @field:Json(name = "danger") val danger : String,
     @field:Json(name = "type") val type : String,
     @field:Json(name = "status") val status : String,
     @field:Json(name = "mailUser") val mailUser : String,

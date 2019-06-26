@@ -14,7 +14,7 @@ class ReportInfoActivity : AppCompatActivity() {
         val intento = intent
         if(intento != null){
             var name = intento.getStringExtra("name")
-            var danger = intento.getIntExtra("danger", 0)
+            var danger = intento.getStringExtra("danger")
             var type = intento.getStringExtra("type")
             var status = intento.getStringExtra("status")
             var mailUser = intento.getStringExtra("mail")
@@ -24,7 +24,7 @@ class ReportInfoActivity : AppCompatActivity() {
             var level = intento.getIntExtra("level", 0)
             var img = intento.getStringExtra("img")
             ar_name.text = name
-            ar_danger.text = danger.toString()
+            ar_danger.text = danger
             ar_type.text = type
             ar_status.text = status
             ar_user.text = mailUser
