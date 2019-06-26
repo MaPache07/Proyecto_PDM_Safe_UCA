@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/generalPadding"
-            android:text="Usuario"
+            android:text="@string/user_nav"
             android:textSize="@dimen/normalText"
             android:textColor="#313848"/>
     </LinearLayout>
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="No hay sesión iniciada"
+            android:text="@string/user_not_logged_in"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#313848"/>
 

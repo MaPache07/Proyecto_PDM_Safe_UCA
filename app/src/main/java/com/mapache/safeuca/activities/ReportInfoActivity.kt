@@ -19,8 +19,6 @@ class ReportInfoActivity : AppCompatActivity() {
             var status = intento.getStringExtra("status")
             var mailUser = intento.getStringExtra("mail")
             var description = intento.getStringExtra("desc")
-            var latitud = intento.getDoubleExtra("lat", 0.0)
-            var longitud = intento.getDoubleExtra("long", 0.0)
             var level = intento.getIntExtra("level", 0)
             ar_name.text = name
             ar_danger.text = danger
@@ -28,8 +26,6 @@ class ReportInfoActivity : AppCompatActivity() {
             ar_status.text = status
             ar_user.text = mailUser
             ar_description.text = description
-            ar_latitud.text = latitud.toString()
-            ar_longitud.text = longitud.toString()
             ar_level.text = level.toString()
         }
     }
