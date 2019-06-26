@@ -23,8 +23,8 @@ interface ReportService {
     @FormUrlEncoded
     @POST("/reports")
     fun postReport(
-        @Body body : String
-        /*@Field("name") name : String,
+        //@Body body : String
+        @Field("name") name : String,
         @Field("danger") danger : String,
         @Field("type") type : String,
         @Field("status") status : String,
@@ -33,7 +33,7 @@ interface ReportService {
         @Field("lat") lat : Double,
         @Field("ltn") ltn : Double,
         @Field("idZone") idZone : String,
-        @Field("level") level : Int*/
+        @Field("level") level : Int
     ) : Call<DefaultResponse>
 
     companion object{

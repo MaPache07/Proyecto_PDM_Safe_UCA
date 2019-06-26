@@ -64,7 +64,7 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
     }
 
     fun postReport(reportRetro: ReportRetro) : Call<DefaultResponse> {
-        val json = JSONObject()
+        /*val json = JSONObject()
         json.put("name", reportRetro.name)
         json.put("danger", reportRetro.danger)
         json.put("type", reportRetro.type)
@@ -74,9 +74,20 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
         json.put("lat", reportRetro.lat)
         json.put("ltn", reportRetro.ltn)
         json.put("idZone", reportRetro.idZone.id)
-        json.put("level", reportRetro.level)
-
-        return ReportService.getRetrofit().postReport(json.toString())
+        json.put("level", reportRetro.level)*/
+        //return ReportService.getRetrofit().postReport(json.toString())
+        return ReportService.getRetrofit().postReport(
+            reportRetro.name,
+            reportRetro.danger,
+            reportRetro.type,
+            reportRetro.status,
+            reportRetro.mailUser,
+            reportRetro.description,
+            reportRetro.lat,
+            reportRetro.ltn,
+            reportRetro.idZone.id,
+            reportRetro.level
+        )
     }
 
     @WorkerThread
