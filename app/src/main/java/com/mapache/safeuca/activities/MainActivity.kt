@@ -1,7 +1,9 @@
 package com.mapache.safeuca.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.core.view.GravityCompat
@@ -40,13 +42,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var providers : List<AuthUI.IdpConfig>
     private lateinit var reportViewModel : ReportViewModel
     val MY_REQUEST_CODE : Int = 123
+    lateinit var pref : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(savedInstanceState != null){
-            tv_escondido.text = savedInstanceState.getString(AppConstants.SAVE_THEME)
+        pref = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+
+        if(pref.getString(AppConstants.SAVE_THEME, "") == ""){
+            pref.edit().putString(AppConstants.SAVE_THEME, "0").commit()
         }
 
         auth = FirebaseAuth.getInstance()
@@ -134,11 +139,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(AppConstants.SAVE_THEME, tv_escondido.text.trim().toString())
-    }
-
     private fun showSignInOptions(){
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers)
@@ -193,6 +193,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             myReports.isVisible = false
             dark.isVisible = true
         }
+        if(pref.getString(AppConstants.SAVE_THEME, "") == "1"){
+            dark.isVisible = false
+            bright.isVisible = true
+        }
         return true
     }
 
@@ -230,7 +234,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         logout.isVisible = false
                         myReports.isVisible = false
                         allReports.isVisible = true
-                        if (tv_escondido.text == "0"){
+                        if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
                             dark.isVisible = true
                             bright.isVisible = false
                             changeTheme()
@@ -243,16 +247,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
             }
             R.id.nav_dark_mode -> {
-                if (tv_escondido.text == "0"){
-                    tv_escondido.text = "1"
+                if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
+                    pref.edit().putString(AppConstants.SAVE_THEME, "1").commit()
                     changeTheme()
                     dark.isVisible = false
                     bright.isVisible = true
                 }
             }
             R.id.nav_bright_mode -> {
-                if (tv_escondido.text == "1"){
-                    tv_escondido.text = "0"
+                if (pref.getString(AppConstants.SAVE_THEME, "") == "1"){
+                    pref.edit().putString(AppConstants.SAVE_THEME, "0").commit()
                     changeTheme()
                     dark.isVisible = true
                     bright.isVisible = false
@@ -276,7 +280,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_map -> {
                 changeTheme()
-                if(tv_escondido.text == "0"){
+                if(pref.getString(AppConstants.SAVE_THEME, "") == "0"){
                     dark.isVisible = true
                     bright.isVisible = false
                 }

@@ -2,6 +2,7 @@ package com.mapache.safeuca.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -41,7 +42,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBottomSheetDialog : BottomSheetDialog
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
-    private lateinit var flag : TextView
+    //private lateinit var flag : TextView
     private lateinit var auth: FirebaseAuth
     var arrayPolygon = ArrayList<Polygon>()
     lateinit var polygon : Polygon
@@ -53,6 +54,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     var flagZone = false
     var flagBuilding = false
     var click : newReportClick? = null
+    lateinit var pref : SharedPreferences
 
     companion object{
         fun newInstance (): MapsFragment {
@@ -86,7 +88,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         reportViewModel.getReportsAsync()
         reportViewModel.getZonesAzync()
 
-        flag = activity!!.findViewById(R.id.tv_escondido)
+        pref = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        //flag = activity!!.findViewById(R.id.tv_escondido)
 
         contentInitialDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
         contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
@@ -178,7 +181,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        if (flag.text== "0"){
+        if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_standar))
         }
         else{
