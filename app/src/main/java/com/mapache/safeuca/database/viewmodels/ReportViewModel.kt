@@ -97,6 +97,8 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun getReport(id : String) = repository.getReport(id)
 
+    fun getReportsPerZone(id : String) = repository.allReportsPerZone(id)
+
     fun getZone(id : String) = repository.getZone(id)
 
     fun getUser(mail : String) = repository.getUser(mail)

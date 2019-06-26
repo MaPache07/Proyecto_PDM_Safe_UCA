@@ -27,6 +27,7 @@ import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
+import com.mapache.safeuca.fragments.ZonesFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var fragmentMap : MapsFragment
     private lateinit var auth: FirebaseAuth
     private lateinit var reportsFragment: ReportsFragment
+    private lateinit var zonesFragment : ZonesFragment
     lateinit var providers : List<AuthUI.IdpConfig>
     private lateinit var reportViewModel : ReportViewModel
     val MY_REQUEST_CODE : Int = 123
@@ -214,6 +216,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val dark = nav_view.menu[4]
         val bright = nav_view.menu[5]
         val logout = nav_view.menu[6]
+        val zones = nav_view.menu[7]
         when (item.itemId) {
             R.id.nav_log_in -> {
                 showSignInOptions()
@@ -293,6 +296,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     myReports.isVisible = false
                 }
                 map.isVisible = false
+            }
+            R.id.nav_zone -> {
+                zonesFragment = ZonesFragment.newInstance()
+                changeFragment(R.id.fragment_map, zonesFragment)
+                map.isVisible = true
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
