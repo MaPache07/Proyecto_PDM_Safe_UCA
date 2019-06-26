@@ -75,8 +75,6 @@ class ReportsFragment : Fragment() {
         extras.putString("status",item.status)
         extras.putString("mail",item.mailUser)
         extras.putString("desc",item.description)
-        extras.putDouble("lat",item.lat)
-        extras.putDouble("long",item.ltn)
         extras.putInt("level",item.level)
 
         startActivity(Intent(context, ReportInfoActivity::class.java).putExtras(extras))

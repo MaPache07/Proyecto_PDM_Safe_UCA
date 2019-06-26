@@ -21,11 +21,11 @@
             android:id="@+id/initial_si"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Si"/>
+            android:text="@string/si"/>
         <Button
             android:id="@+id/initial_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="no"/>
+            android:text="@string/no"/>
     </LinearLayout>
 </LinearLayout>

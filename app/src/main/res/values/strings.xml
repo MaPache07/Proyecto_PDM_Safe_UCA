@@ -14,10 +14,21 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_maps_fragment">Map</string>
-    <string name="dialogZone">¿Esta es la ubicación de la zona de riesgo?</string>
+    <string name="dialogZone">¿Is this the danger ubication?</string>
     <string name="log_out">Log out</string>
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="settings">Settings</string>
-    <string name="zoneDialog">¿La zona de riesgo se encuentra en</string>
+    <string name="zoneDialog">¿Is the danger zone in</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+    <string name="user_nav">User</string>
+    <string name="user_not_logged_in">User not logged in</string>
+    <string name="info_name">NAME:</string>
+    <string name="info_danger">DANGER:</string>
+    <string name="info_type">TYPE:</string>
+    <string name="info_state">STATE:</string>
+    <string name="info_user">USER:</string>
+    <string name="info_description">DESCRIPTION:</string>
+    <string name="info_level">LEVEL:</string>
 </resources>
