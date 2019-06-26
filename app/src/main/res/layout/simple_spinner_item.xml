@@ -2,13 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/generalPadding">
+    android:padding="@dimen/generalPadding"
+    android:background="#313848">
     <TextView
         android:id="@+id/item_spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="#8adfdc"
         android:textSize="@dimen/smallText"/>
 </LinearLayout>

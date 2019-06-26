@@ -4,14 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/generalPadding">
+    android:padding="@dimen/generalPadding"
+    android:background="#313848">
     <TextView
         android:id="@+id/zone_dialog_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="#8adfdc"
         android:textSize="@dimen/normalText"
-        android:text=""/>
+        android:gravity="center"
+        android:layout_margin="@dimen/generalPadding"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,11 +23,16 @@
             android:id="@+id/zone_si"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/si"/>
+            android:text="@string/si"
+            android:textColor="#313848"
+            android:backgroundTint="#8adfdc"
+            android:layout_margin="@dimen/generalPadding"/>
         <Button
             android:id="@+id/zone_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no"/>
+            android:text="@string/no"
+            android:textColor="#313848"
+            android:backgroundTint="#8adfdc"/>
     </LinearLayout>
 </LinearLayout>
