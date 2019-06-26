@@ -1,6 +1,7 @@
 package com.mapache.safeuca.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
+import com.mapache.safeuca.activities.ReportInfoActivity
+import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants
@@ -62,7 +65,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         fun changeTheme()
     }
     interface newReportClick{
-        fun newReportClick(latLng: LatLng, zone : Zone, level: Int)
+        fun newReportClick(latLng: LatLng, idZone : String, level: Int)
     }
 
     override fun onAttach(context: Context) {
@@ -119,13 +122,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 flagZone = true
                 mBottomSheetDialog.zone_dialog_tv.text = text
             } else{
-                click?.newReportClick(marker.position, zone, -1)
+                click?.newReportClick(marker.position, "5d13aa0b5003f10017fb2cc0", -1)
                 mBottomSheetDialog.dismiss()
             }
         }
 
         contentZoneDialog.zone_no.setOnClickListener {
-            click?.newReportClick(marker.position, zone, -1)
+            click?.newReportClick(marker.position, "5d13aa0b5003f10017fb2cc0", -1)
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
@@ -146,13 +149,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, arrayList)
                 }
             } else{
-                click?.newReportClick(marker.position, zone, -1)
+                click?.newReportClick(marker.position, zone.id, -1)
                 mBottomSheetDialog.dismiss()
             }
         }
 
         contentBuildingDialog.building_ok.setOnClickListener {
-            click?.newReportClick(marker.position, zone, buildingSelected)
+            click?.newReportClick(marker.position, zone.id, buildingSelected)
             mBottomSheetDialog.dismiss()
         }
 
@@ -196,12 +199,25 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 Toast.makeText(context, "Inicia sesion para reportar", Toast.LENGTH_LONG).show()
             }
         }
+
+        mMap.setOnMarkerClickListener {
+            val extras = Bundle()
+            extras.putString("name",(it.tag as Report).name)
+            extras.putString("danger",(it.tag as Report).danger)
+            extras.putString("type",(it.tag as Report).type)
+            extras.putString("status",(it.tag as Report).status)
+            extras.putString("mail",(it.tag as Report).mailUser)
+            extras.putString("desc",(it.tag as Report).description)
+            extras.putInt("level",(it.tag as Report).level)
+            startActivity(Intent(context, ReportInfoActivity::class.java).putExtras(extras))
+            true
+        }
     }
 
     fun initMap(mMap : GoogleMap){
         reportViewModel.allReports.observe(this, Observer {
             it.forEach{
-                mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+                mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name)).tag = it
             }
         })
     }
@@ -230,24 +246,26 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         for(pp in arrayPolygon){
             var angulo = 0.0
             var i = 0
-            while(i < pp.points.size-1){
-                var j = 1
-                if(i == pp.points.size-2){
-                    j = -i
+            if(pp.points.size == 5){
+                while(i < pp.points.size-1){
+                    var j = 1
+                    if(i == pp.points.size-2){
+                        j = -i
+                    }
+                    var x1 = cor.latitude - pp.points[i].latitude
+                    var y1 = cor.longitude - pp.points[i].longitude
+                    var x2 = cor.latitude - pp.points[i+j].latitude
+                    var y2 = cor.longitude - pp.points[i+j].longitude
+                    var xy1 = x1*x2 + y1*y2
+                    var xy2 = Math.sqrt(Math.pow(x1, 2.0)+Math.pow(y1, 2.0))*Math.sqrt(Math.pow(x2, 2.0)+Math.pow(y2, 2.0))
+                    angulo += Math.acos(xy1/xy2)
+                    i++
                 }
-                var x1 = cor.latitude - pp.points[i].latitude
-                var y1 = cor.longitude - pp.points[i].longitude
-                var x2 = cor.latitude - pp.points[i+j].latitude
-                var y2 = cor.longitude - pp.points[i+j].longitude
-                var xy1 = x1*x2 + y1*y2
-                var xy2 = Math.sqrt(Math.pow(x1, 2.0)+Math.pow(y1, 2.0))*Math.sqrt(Math.pow(x2, 2.0)+Math.pow(y2, 2.0))
-                angulo += Math.acos(xy1/xy2)
-                i++
-            }
-            angulo = Math.floor(angulo*1e4)/1e4
-            if(angulo == 6.2831){
-                polygon = pp
-                return true
+                angulo = Math.floor(angulo*1e4)/1e4
+                if(angulo == 6.2831){
+                    polygon = pp
+                    return true
+                }
             }
         }
         return false

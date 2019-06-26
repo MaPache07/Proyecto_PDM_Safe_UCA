@@ -63,19 +63,7 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
         return  ReportService.getRetrofit().getZones()
     }
 
-    fun postReport(reportRetro: ReportRetro) : Call<DefaultResponse> {
-        /*val json = JSONObject()
-        json.put("name", reportRetro.name)
-        json.put("danger", reportRetro.danger)
-        json.put("type", reportRetro.type)
-        json.put("status", reportRetro.status)
-        json.put("mailUser", reportRetro.mailUser)
-        json.put("description", reportRetro.description)
-        json.put("lat", reportRetro.lat)
-        json.put("ltn", reportRetro.ltn)
-        json.put("idZone", reportRetro.idZone.id)
-        json.put("level", reportRetro.level)*/
-        //return ReportService.getRetrofit().postReport(json.toString())
+    fun postReport(reportRetro: Report) : Call<DefaultResponse> {
         return ReportService.getRetrofit().postReport(
             reportRetro.name,
             reportRetro.danger,
@@ -85,7 +73,7 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
             reportRetro.description,
             reportRetro.lat,
             reportRetro.ltn,
-            reportRetro.idZone.id,
+            reportRetro.idZone,
             reportRetro.level
         )
     }

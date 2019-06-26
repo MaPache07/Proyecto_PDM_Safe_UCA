@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
+import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.models.DefaultResponse
@@ -33,7 +34,7 @@ class NewReportActivity : AppCompatActivity() {
     lateinit var dangerSelected : String
     lateinit var typeSelected : String
     lateinit var latLng : LatLng
-    lateinit var zone : Zone
+    lateinit var idZone : String
     var level : Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,7 @@ class NewReportActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         latLng = intent?.extras?.getParcelable(AppConstants.LATLNT_KEY)!!
-        zone = intent?.extras?.getParcelable(AppConstants.ZONE_KEY)!!
+        idZone = intent?.extras?.getString(AppConstants.ZONE_KEY)!!
         level = intent?.extras?.getInt(AppConstants.LEVEL_KEY)!!
 
         initSpinners()
@@ -55,9 +56,9 @@ class NewReportActivity : AppCompatActivity() {
             if(TextUtils.isEmpty(new_report_name.text) && TextUtils.isEmpty(new_report_description.text)){
                 Toast.makeText(applicationContext, "Ingrese todos los datos", Toast.LENGTH_LONG).show()
             } else{
-                val retroRepo = ReportRetro("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
+                val retroRepo = Report("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
                     "No Resuelto", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
-                    latLng.latitude, latLng.longitude, zone, level)
+                    latLng.latitude, latLng.longitude, idZone, level)
                 reportViewModel.postReport(retroRepo)
                 setResult(Activity.RESULT_OK)
                 finish()
