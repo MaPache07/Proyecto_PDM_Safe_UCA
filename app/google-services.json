@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "139638922326-9mraa9rcg6qpvgh210ed7q7ldgj8jc6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mapache.safeuca",
+            "certificate_hash": "8c9b42fbc382a69cd44c216274cc755bf7f05c99"
+          }
+        },
+        {
           "client_id": "139638922326-i0t0oh25it1fgup1q9u81m370034ma3g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
