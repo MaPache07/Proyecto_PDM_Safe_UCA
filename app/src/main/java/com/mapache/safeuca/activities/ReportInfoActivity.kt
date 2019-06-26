@@ -2,6 +2,7 @@ package com.mapache.safeuca.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isVisible
 import com.mapache.safeuca.R
 import kotlinx.android.synthetic.main.activity_report_info.*
 
@@ -26,7 +27,8 @@ class ReportInfoActivity : AppCompatActivity() {
             ar_status.text = status
             ar_user.text = mailUser
             ar_description.text = description
-            ar_level.text = level.toString()
+            if(level == -1) level_info.isVisible = false
+            else ar_level.text = level.toString()
         }
     }
 }
