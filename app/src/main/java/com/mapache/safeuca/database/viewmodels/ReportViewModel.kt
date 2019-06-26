@@ -5,12 +5,14 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.database.RoomDB
 import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Rol
 import com.mapache.safeuca.database.entities.User
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.repositories.ReportRepository
+import com.mapache.safeuca.models.ReportRetro
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -58,7 +60,7 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
             this.body()?.forEach {
                 this@ReportViewModel.insertZone(it.idZone)
                 val report = Report(it.id, it.name, it.danger, it.type, it.status, it.mailUser,
-                            it.description, it.lat, it.ltn, it.idZone.id, it.level, it.image)
+                            it.description, it.lat, it.ltn, it.idZone.id, it.level)
                 this@ReportViewModel.insertReport(report)
             }
         } else with(response){
@@ -84,6 +86,8 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
             }
         }
     }
+
+    fun postReport(reportRetro: ReportRetro) = repository.postReport(reportRetro)
 
     fun getReport(id : String) = repository.getReport(id)
 

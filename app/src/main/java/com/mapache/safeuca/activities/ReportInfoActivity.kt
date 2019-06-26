@@ -22,7 +22,6 @@ class ReportInfoActivity : AppCompatActivity() {
             var latitud = intento.getDoubleExtra("lat", 0.0)
             var longitud = intento.getDoubleExtra("long", 0.0)
             var level = intento.getIntExtra("level", 0)
-            var img = intento.getStringExtra("img")
             ar_name.text = name
             ar_danger.text = danger
             ar_type.text = type

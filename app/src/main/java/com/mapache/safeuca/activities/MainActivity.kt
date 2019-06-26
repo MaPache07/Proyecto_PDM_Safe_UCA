@@ -1,14 +1,8 @@
 package com.mapache.safeuca.activities
 
-import android.Manifest
 import android.app.Activity
-import android.content.ClipData
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Environment
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -19,13 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProviders
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.maps.model.LatLng
@@ -33,14 +23,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
+import com.mapache.safeuca.database.entities.Zone
+import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import kotlinx.android.synthetic.main.nav_header_main.view.*
-import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, MapsFragment.changeTheme {
@@ -49,6 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var auth: FirebaseAuth
     private lateinit var reportsFragment: ReportsFragment
     lateinit var providers : List<AuthUI.IdpConfig>
+    private lateinit var reportViewModel : ReportViewModel
     val MY_REQUEST_CODE : Int = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +49,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this@MainActivity)
+        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+
+        Log.d("Hola", "OnCreate MainActivity")
 
         providers = Arrays.asList<AuthUI.IdpConfig>(
             AuthUI.IdpConfig.EmailBuilder().build(),//email login
@@ -96,32 +89,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         map.isVisible = false
     }
-
-    /*override fun onStart() {
-        super.onStart()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        } else {
-            write()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            1 -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                write()
-            }
-        }
-    }
-
-    private fun write() {
-        val dir = "${Environment.getExternalStorageDirectory()}/$packageName"
-        File(dir).mkdirs()
-        val file = "%1\$tY%1\$tm%1\$td%1\$tH%1\$tM%1\$tS.log".format(Date())
-        File("$dir/$file").printWriter().use {
-            it.println("text")
-        }
-    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -165,16 +132,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun changeTheme(){
-        fragmentMap = MapsFragment.newInstance(BottomSheetDialog(this))
+        fragmentMap = MapsFragment.newInstance()
         changeFragment(R.id.fragment_map, fragmentMap)
     }
 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
 
-    override fun newReportClick(latLng: LatLng, idZone : String, level: Int) {
+    override fun newReportClick(latLng: LatLng, zone : Zone, level: Int) {
         var bundle = Bundle()
         bundle.putParcelable(AppConstants.LATLNT_KEY, latLng)
-        bundle.putString(AppConstants.IDZONE_KEY, idZone)
+        bundle.putParcelable(AppConstants.ZONE_KEY, zone)
         bundle.putInt(AppConstants.LEVEL_KEY, level)
         startActivity(Intent(this, NewReportActivity::class.java).putExtras(bundle))
     }
