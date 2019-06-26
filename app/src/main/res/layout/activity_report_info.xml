@@ -5,23 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.ReportInfoActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#313848"
+    android:padding="@dimen/activity_vertical_margin">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/activity_vertical_margin"
+    android:background="#414861">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             android:text="NAME:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#8adfdc"
             android:padding="@dimen/generalPadding"/>
         <TextView
             android:id="@+id/ar_name"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -30,16 +40,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="PELIGRO:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_danger"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -48,16 +60,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="TIPO:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_type"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -66,16 +80,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="ESTADO:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_status"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -84,16 +100,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="USUARIO:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_user"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -102,16 +120,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="DESCRIPCION:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_description"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -120,16 +140,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="LATITUD:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_latitud"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -138,16 +160,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="LONGITUD:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_longitud"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -156,16 +180,18 @@
         android:orientation="horizontal">
         <TextView
             android:text="IDZONE:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_id_zone"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
     <LinearLayout
@@ -174,18 +200,22 @@
         android:orientation="horizontal">
         <TextView
             android:text="NIVEL:"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
         <TextView
             android:id="@+id/ar_level"
-            android:textSize="@dimen/normalText"
+            android:textSize="@dimen/smallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"/>
+            android:padding="@dimen/generalPadding"
+            android:textColor="#8adfdc"/>
 
     </LinearLayout>
+
+</LinearLayout>
 
 
 </LinearLayout>

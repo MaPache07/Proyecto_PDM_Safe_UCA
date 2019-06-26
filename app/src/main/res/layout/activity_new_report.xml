@@ -7,54 +7,118 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.NewReportActivity"
-    android:padding="@dimen/generalPadding">
+    android:padding="@dimen/generalPadding"
+    android:background="#313848">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="#414861"
+        android:padding="@dimen/generalPadding">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textSize="@dimen/smallText"
+                android:textColor="#8adfdc"/>
+            <EditText
+                android:id="@+id/new_report_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#8adfdc"
+                android:hint="Enter name"
+                android:textColorHint="#808ADFDC"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type"
+                    android:textSize="@dimen/smallText"
+                    android:textColor="#8adfdc"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/generalPadding"/>
+                <Spinner
+                    android:id="@+id/spinner_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#8adfdc"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Severity"
+                    android:textSize="@dimen/smallText"
+                    android:textColor="#8adfdc"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/generalPadding"/>
+                <Spinner
+                    android:id="@+id/spinner_danger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#8adfdc"/>
+
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="@dimen/smallText"
+            android:textColor="#8adfdc"
+            android:layout_gravity="center"
+            android:padding="@dimen/generalPadding"/>
         <EditText
-            android:id="@+id/new_report_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/new_report_description"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/action_foto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Spinner
-            android:id="@+id/spinner_type"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <Spinner
-            android:id="@+id/spinner_danger"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <EditText
-        android:id="@+id/new_report_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lines="10"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <Button
-            android:id="@+id/new_report_ok"
-            android:layout_width="wrap_content"
+            android:lines="10"
+            android:textColor="#8adfdc"
+            android:hint="Write description..."
+            android:textColorHint="#808ADFDC"
+            android:gravity="top"/>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ok"/>
-        <Button
-            android:id="@+id/new_report_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="cancel"/>
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/new_report_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ok"
+                android:backgroundTint="#8adfdc"
+                android:textColor="#313848"/>
+            <Button
+                android:id="@+id/new_report_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cancel"
+                android:backgroundTint="#8adfdc"
+                android:textColor="#313848"/>
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
