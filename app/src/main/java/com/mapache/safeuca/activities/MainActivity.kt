@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(savedInstanceState != null){
+            tv_escondido.text = savedInstanceState.getString(AppConstants.SAVE_THEME)
+        }
+
         auth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -128,6 +132,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 changeTheme()
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(AppConstants.SAVE_THEME, tv_escondido.text.trim().toString())
     }
 
     private fun showSignInOptions(){

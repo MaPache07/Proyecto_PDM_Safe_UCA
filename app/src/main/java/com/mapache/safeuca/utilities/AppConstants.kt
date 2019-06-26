@@ -7,4 +7,5 @@ object AppConstants {
     val ZONE_KEY = "IdZoneKey"
     val BOTTOM_SHEET_DIALOG_kEY = "BottomSheetDialogKey"
     val REQUEST_CODE = 7
+    val SAVE_THEME = "SaveTheme"
 }
