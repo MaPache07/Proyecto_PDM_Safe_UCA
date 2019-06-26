@@ -45,6 +45,8 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
         rolDao.insert(rol)
     }
 
+    fun allReportsPerZone(idZone : String)  = reportDao.getReportPerZone(idZone)
+
     fun getReport(id : String) = reportDao.getReport(id)
 
     fun getZone(id : String) = zoneDao.getZone(id)

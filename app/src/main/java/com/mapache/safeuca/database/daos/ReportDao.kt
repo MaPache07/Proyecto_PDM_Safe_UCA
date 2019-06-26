@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.mapache.safeuca.database.entities.Report
+import com.mapache.safeuca.database.entities.Zone
 
 @Dao
 interface ReportDao {
@@ -20,6 +21,9 @@ interface ReportDao {
 
     @Query("SELECT * FROM report_table WHERE mailUser = :mail")
     fun getReportPerUser(mail : String) : LiveData<List<Report>>
+
+    @Query("SELECT * FROM report_table WHERE idZone = :idZone")
+    fun getReportPerZone(idZone : String) : LiveData<List<Report>>
 
     @Query("DELETE FROM report_table")
     suspend fun nukeTable()

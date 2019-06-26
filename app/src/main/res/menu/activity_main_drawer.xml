@@ -45,6 +45,11 @@
             android:icon="@drawable/ic_subdirectory_arrow_left_black_24dp"
             android:title="@string/log_out"
             android:visible="false"/>
+        <item
+                android:id="@+id/nav_zone"
+                android:icon="@drawable/ic_place_black_24dp"
+                android:title="@string/zones"
+                android:visible="true"/>
     </group>
 
     <item android:title="Misc">
