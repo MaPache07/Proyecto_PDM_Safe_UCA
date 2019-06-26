@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="#735372">
+            android:background="#8adfdc">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/generalPadding"
-                android:textSize="@dimen/normalText"
+                android:textSize="@dimen/smallText"
                 android:hint="prueba"/>
 
     </LinearLayout>
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#8f758e">
+        android:background="#2FC9C7">
         <TextView
                 android:id="@+id/status_del_reporte_en_lista"
                 android:layout_width="0dp"
@@ -30,6 +30,6 @@
                 android:layout_weight="1"
                 android:padding="@dimen/generalPadding"
                 android:hint="prueba"
-                android:textSize="@dimen/smallText"/>
+                android:textSize="@dimen/superSmallText"/>
     </LinearLayout>
 </LinearLayout>
