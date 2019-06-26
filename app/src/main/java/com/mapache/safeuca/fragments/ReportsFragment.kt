@@ -78,7 +78,6 @@ class ReportsFragment : Fragment() {
         extras.putDouble("lat",item.lat)
         extras.putDouble("long",item.ltn)
         extras.putInt("level",item.level)
-        extras.putString("img",item.image)
 
         startActivity(Intent(context, ReportInfoActivity::class.java).putExtras(extras))
     }

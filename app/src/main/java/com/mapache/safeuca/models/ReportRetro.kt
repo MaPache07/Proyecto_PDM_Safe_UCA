@@ -14,6 +14,5 @@ data class ReportRetro(
     @field:Json(name = "lat") val lat : Double,
     @field:Json(name = "ltn") val ltn : Double,
     @field:Json(name = "idZone") val idZone : Zone,
-    @field:Json(name = "level") val level : Int,
-    @field:Json(name = "image") val image : String
+    @field:Json(name = "level") val level : Int
 )

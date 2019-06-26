@@ -14,7 +14,7 @@ interface ZoneDao {
     suspend fun insert(zone : Zone)
 
     @Query("SELECT * FROM zone_table WHERE id = :id")
-    fun getZone(id : String) : Zone
+    fun getZone(id : String) : LiveData<Zone>
 
     @Query("SELECT * FROM zone_table")
     fun getAllZone() : LiveData<List<Zone>>

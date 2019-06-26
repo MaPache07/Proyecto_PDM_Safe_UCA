@@ -3,6 +3,7 @@ package com.mapache.safeuca.fragments
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import com.mapache.safeuca.utilities.AppConstants
 import kotlinx.android.synthetic.main.building_dialog.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
@@ -50,10 +52,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     var click : newReportClick? = null
 
     companion object{
-        fun newInstance (mBottomSheetDialog: BottomSheetDialog/*, binding: ZoneDialogBinding*/): MapsFragment {
+        fun newInstance (): MapsFragment {
             val newFragment = MapsFragment()
-            newFragment.mBottomSheetDialog = mBottomSheetDialog
-            //newFragment.binding = binding
             return  newFragment
         }
     }
@@ -62,7 +62,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         fun changeTheme()
     }
     interface newReportClick{
-        fun newReportClick(latLng: LatLng, idZone : String, level: Int)
+        fun newReportClick(latLng: LatLng, zone : Zone, level: Int)
     }
 
     override fun onAttach(context: Context) {
@@ -76,8 +76,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         auth = FirebaseAuth.getInstance()
+        Log.d("Hola", "OnCreateView MapsFragment")
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        mBottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
         reportViewModel.getZonesAzync()
         reportViewModel.getReportsAsync()
 
@@ -117,13 +119,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 flagZone = true
                 mBottomSheetDialog.zone_dialog_tv.text = text
             } else{
-                click?.newReportClick(marker.position, "id_UCA", -1)
+                click?.newReportClick(marker.position, zone, -1)
                 mBottomSheetDialog.dismiss()
             }
         }
 
         contentZoneDialog.zone_no.setOnClickListener {
-            click?.newReportClick(marker.position, "id_UCA", -1)
+            click?.newReportClick(marker.position, zone, -1)
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
@@ -132,13 +134,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, (1..zone.level).toList().toTypedArray())
                 flagBuilding = true
             } else{
-                click?.newReportClick(marker.position, zone.id, -1)
+                click?.newReportClick(marker.position, zone, -1)
                 mBottomSheetDialog.dismiss()
             }
         }
 
         contentBuildingDialog.building_ok.setOnClickListener {
-            click?.newReportClick(marker.position, zone.id, buildingSelected)
+            click?.newReportClick(marker.position, zone, buildingSelected)
             mBottomSheetDialog.dismiss()
         }
 
