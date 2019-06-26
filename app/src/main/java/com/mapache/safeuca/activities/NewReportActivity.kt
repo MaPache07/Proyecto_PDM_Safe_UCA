@@ -25,8 +25,8 @@ import retrofit2.Response
 class NewReportActivity : AppCompatActivity() {
 
     private lateinit var reportViewModel : ReportViewModel
-    val arrayDanger : Array<String> = arrayOf("Bajo", "Medio", "Alto")
-    val arrayType : Array<String> = arrayOf("Reporte", "Mantenimiento")
+    val arrayDanger : Array<String> = arrayOf("Low", "Moderate", "High")
+    val arrayType : Array<String> = arrayOf("Report", "Maintenance")
     private lateinit var auth: FirebaseAuth
     lateinit var dangerSelected : String
     lateinit var typeSelected : String
