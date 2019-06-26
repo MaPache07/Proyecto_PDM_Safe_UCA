@@ -14,6 +14,7 @@ import com.mapache.safeuca.models.DefaultResponse
 import com.mapache.safeuca.models.ReportRetro
 import com.mapache.safeuca.service.ReportService
 import kotlinx.coroutines.Deferred
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 
@@ -63,18 +64,19 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
     }
 
     fun postReport(reportRetro: ReportRetro) : Call<DefaultResponse> {
-        return ReportService.getRetrofit().postReport(
-            reportRetro.name,
-            reportRetro.danger,
-            reportRetro.type,
-            reportRetro.status,
-            reportRetro.mailUser,
-            reportRetro.description,
-            reportRetro.lat,
-            reportRetro.ltn,
-            reportRetro.idZone,
-            reportRetro.level
-        )
+        val json = JSONObject()
+        json.put("name", reportRetro.name)
+        json.put("danger", reportRetro.danger)
+        json.put("type", reportRetro.type)
+        json.put("status", reportRetro.status)
+        json.put("mailUser", reportRetro.mailUser)
+        json.put("description", reportRetro.description)
+        json.put("lat", reportRetro.lat)
+        json.put("ltn", reportRetro.ltn)
+        json.put("idZone", reportRetro.idZone.id)
+        json.put("level", reportRetro.level)
+
+        return ReportService.getRetrofit().postReport(json.toString())
     }
 
     @WorkerThread

@@ -87,7 +87,13 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun postReport(reportRetro: ReportRetro) = repository.postReport(reportRetro)
+    fun postReport(reportRetro: ReportRetro){
+        repository.postReport(reportRetro).execute()
+        /*val response : Call<DefaultResponse> = repository.postReport(reportRetro)
+        if(response.execute().isSuccessful){
+            Log.d("Hola", "Funciona")
+        }*/
+    }
 
     fun getReport(id : String) = repository.getReport(id)
 

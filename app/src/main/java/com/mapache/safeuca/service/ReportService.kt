@@ -10,9 +10,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ReportService {
 
@@ -22,9 +20,11 @@ interface ReportService {
     @GET("/zones")
     fun getZones() : Deferred<Response<List<Zone>>>
 
+    @FormUrlEncoded
     @POST("/reports")
     fun postReport(
-        @Field("name") name : String,
+        @Body body : String
+        /*@Field("name") name : String,
         @Field("danger") danger : String,
         @Field("type") type : String,
         @Field("status") status : String,
@@ -32,8 +32,8 @@ interface ReportService {
         @Field("description") description : String,
         @Field("lat") lat : Double,
         @Field("ltn") ltn : Double,
-        @Field("idZpne") idZone : Zone,
-        @Field("level") level : Int
+        @Field("idZone") idZone : String,
+        @Field("level") level : Int*/
     ) : Call<DefaultResponse>
 
     companion object{

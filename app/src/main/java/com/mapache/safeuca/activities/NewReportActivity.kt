@@ -56,14 +56,17 @@ class NewReportActivity : AppCompatActivity() {
                 val retroRepo = ReportRetro("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
                     "No Resuelto", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
                     latLng.latitude, latLng.longitude, zone, level)
-                reportViewModel.postReport(retroRepo).enqueue(object : Callback<DefaultResponse>{
+                reportViewModel.postReport(retroRepo)
+
+
+                    /*.enqueue(object : Callback<DefaultResponse>{
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         Toast.makeText(applicationContext, "Ocurrio un error", Toast.LENGTH_LONG).show()
                     }
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         Toast.makeText(applicationContext, "Se reporto correctamente", Toast.LENGTH_LONG).show()
                     }
-                })
+                })*/
                 finish()
             }
         }
