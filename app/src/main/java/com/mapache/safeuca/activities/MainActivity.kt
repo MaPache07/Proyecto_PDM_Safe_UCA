@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         providers = Arrays.asList<AuthUI.IdpConfig>(
             AuthUI.IdpConfig.EmailBuilder().build(),//email login
-            //AuthUI.IdpConfig.FacebookBuilder().build(), //fb login
             AuthUI.IdpConfig.GoogleBuilder().build()) //google login
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -143,7 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
-                Toast.makeText(this, "Iniciado correctamente", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Log in successful", Toast.LENGTH_LONG).show()
                 correo_en_nav.text = user!!.email
                 nombre_en_nav.text = user!!.displayName
                 logIn.isVisible = false
@@ -153,7 +152,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 // ...
             } else {
-                Toast.makeText(this, "Error al iniciar " + response, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Log in error " + response, Toast.LENGTH_LONG).show()
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
@@ -263,9 +262,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener {
-                        Toast.makeText(this, "Cerrado correctamente", Toast.LENGTH_LONG).show()
-                        correo_en_nav.text = "No hay sesión iniciada"
-                        nombre_en_nav.text = "Usuario"
+                        Toast.makeText(this, "Log out successful", Toast.LENGTH_LONG).show()
+                        correo_en_nav.text = "User not logged in"
+                        nombre_en_nav.text = "User"
                         logIn.isVisible = true
                         map.isVisible = false
                         logout.isVisible = false
