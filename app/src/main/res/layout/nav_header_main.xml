@@ -32,7 +32,7 @@
             android:layout_margin="@dimen/generalPadding"
             android:text="@string/user_nav"
             android:textSize="@dimen/normalText"
-            android:textColor="#313848"/>
+            android:textColor="@color/colorPrimaryDark"/>
     </LinearLayout>
 
 
