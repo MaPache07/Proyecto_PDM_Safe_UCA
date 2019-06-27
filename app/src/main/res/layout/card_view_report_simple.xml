@@ -38,6 +38,7 @@
             android:hint="prueba"
             android:textSize="@dimen/superSmallText"/>
         <TextView
+            android:id="@+id/floor_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/generalPadding"
@@ -48,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/generalPadding"
-            android:hint="prueba"
+            android:hint=""
             android:textSize="@dimen/superSmallText"/>
     </LinearLayout>
 </LinearLayout>

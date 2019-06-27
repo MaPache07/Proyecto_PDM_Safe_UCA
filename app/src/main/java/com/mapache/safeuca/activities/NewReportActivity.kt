@@ -1,7 +1,10 @@
 package com.mapache.safeuca.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -54,24 +57,20 @@ class NewReportActivity : AppCompatActivity() {
     fun setOnClickListeners(){
         new_report_ok.setOnClickListener {
             if(TextUtils.isEmpty(new_report_name.text) && TextUtils.isEmpty(new_report_description.text)){
-                Toast.makeText(applicationContext, "Ingrese todos los datos", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Enter all data", Toast.LENGTH_LONG).show()
             } else{
                 val retroRepo = Report("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
                     "Pending", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
                     latLng.latitude, latLng.longitude, idZone, level)
-                reportViewModel.postReport(retroRepo)
+                if(checkNetworkStatus()) reportViewModel.postReport(retroRepo)
+                else Toast.makeText(applicationContext, "Internet required to report", Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_OK)
                 finish()
-
-                    /*.enqueue(object : Callback<DefaultResponse>{
-                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                        Toast.makeText(applicationContext, "Ocurrio un error", Toast.LENGTH_LONG).show()
-                    }
-                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                        Toast.makeText(applicationContext, "Se reporto correctamente", Toast.LENGTH_LONG).show()
-                    }
-                })*/
             }
+        }
+        new_report_cancel.setOnClickListener {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
         }
     }
 
@@ -98,5 +97,13 @@ class NewReportActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun checkNetworkStatus() : Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if(connectivityManager is ConnectivityManager){
+            val networkInfo : NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 }

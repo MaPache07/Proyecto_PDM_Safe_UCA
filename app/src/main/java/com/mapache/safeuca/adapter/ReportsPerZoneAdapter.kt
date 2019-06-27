@@ -3,6 +3,7 @@ package com.mapache.safeuca.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
@@ -30,7 +31,8 @@ class ReportsPerZoneAdapter (var items : List<Report>) : RecyclerView.Adapter<Re
         fun bind(item : Report) = with(itemView){
             nombre_de_reportes_en_lista_simple.text = item.name
             status_del_reporte_en_lista_simple.text = item.status
-            piso_del_reporte_en_lista_simple.text = item.level.toString()
+            if(item.level == -1) floor_tv.isVisible = false
+            else piso_del_reporte_en_lista_simple.text = item.level.toString()
         }
     }
 }

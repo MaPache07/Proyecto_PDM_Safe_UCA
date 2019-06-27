@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.ReportInfoActivity"
     android:orientation="vertical"
-    android:background="#313848"
-    android:padding="@dimen/activity_vertical_margin">
+    android:background="#313848">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

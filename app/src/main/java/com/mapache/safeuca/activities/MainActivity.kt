@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val logout = nav_view.menu[6]
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
+        var flag = true
         if(savedInstanceState != null){
             if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "") changeTheme()
             else {
@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 bright.isVisible = false
                 map.isVisible = true
             }
+            flag = false
         }
         else{
             if(pref.getString(AppConstants.SAVE_THEME, "") == "") pref.edit().putString(AppConstants.SAVE_THEME, "0").apply()
@@ -113,7 +114,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
         if(auth.currentUser != null){
             val user = FirebaseAuth.getInstance().currentUser
-            Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
+            if(flag) Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
             logIn.isVisible = false
             logout.isVisible = true
             myReports.isVisible = true

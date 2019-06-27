@@ -85,11 +85,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         mBottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
-        reportViewModel.getReportsAsync()
-        reportViewModel.getZonesAzync()
+
+        if(click?.checkNetworkStatus()!!){
+            reportViewModel.getReportsAsync()
+            reportViewModel.getZonesAzync()
+        } else{
+            Toast.makeText(context, "Internet required to see map", Toast.LENGTH_LONG).show()
+        }
 
         pref = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-        //flag = activity!!.findViewById(R.id.tv_escondido)
 
         contentInitialDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
         contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
@@ -198,12 +202,16 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener { latLng ->
             if (auth.currentUser != null){
-                marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
-                mBottomSheetDialog.setContentView(contentInitialDialog)
-                mBottomSheetDialog.show()
+                if(click?.checkNetworkStatus()!!){
+                    marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
+                    mBottomSheetDialog.setContentView(contentInitialDialog)
+                    mBottomSheetDialog.show()
+                } else{
+                    Toast.makeText(context, "Internet required to report", Toast.LENGTH_LONG).show()
+                }
             }
             else{
-                Toast.makeText(context, "Inicia sesion para reportar", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Log in to report something", Toast.LENGTH_LONG).show()
             }
         }
 
