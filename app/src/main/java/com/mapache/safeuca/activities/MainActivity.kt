@@ -190,15 +190,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivityForResult(Intent(this, NewReportActivity::class.java).putExtras(bundle), AppConstants.REQUEST_CODE)
     }
 
-
-
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").commit()
+                changeTheme()
+            }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
