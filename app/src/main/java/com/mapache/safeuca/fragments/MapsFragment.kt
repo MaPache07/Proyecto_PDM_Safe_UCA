@@ -150,6 +150,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     }
                     mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, arrayList)
                 }
+                else if(zone.level == 1){
+                    click?.newReportClick(marker.position, zone.id, -1)
+                    mBottomSheetDialog.dismiss()
+                }
             } else{
                 click?.newReportClick(marker.position, zone.id, -1)
                 mBottomSheetDialog.dismiss()
