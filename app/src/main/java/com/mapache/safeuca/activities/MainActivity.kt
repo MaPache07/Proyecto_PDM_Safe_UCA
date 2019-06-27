@@ -1,9 +1,11 @@
-package com.mapache.safeuca.activities
+package com.mapache.safeuca .activities
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.core.view.GravityCompat
@@ -126,6 +128,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("1", 1)
+    }
+
+    override fun checkNetworkStatus() : Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if(connectivityManager is ConnectivityManager){
+            val networkInfo : NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

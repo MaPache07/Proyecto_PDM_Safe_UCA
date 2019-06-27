@@ -67,6 +67,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
     interface newReportClick{
         fun newReportClick(latLng: LatLng, idZone : String, level: Int)
+        fun checkNetworkStatus() : Boolean
     }
 
     override fun onAttach(context: Context) {
