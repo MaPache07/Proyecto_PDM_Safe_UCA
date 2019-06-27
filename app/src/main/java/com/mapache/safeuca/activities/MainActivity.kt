@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         else{
-            if(pref.getString(AppConstants.SAVE_THEME, "") == "") pref.edit().putString(AppConstants.SAVE_THEME, "0").commit()
+            if(pref.getString(AppConstants.SAVE_THEME, "") == "") pref.edit().putString(AppConstants.SAVE_THEME, "0").apply()
             changeTheme()
         }
 
@@ -196,7 +196,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").commit()
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
                 changeTheme()
             }
         }
@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_dark_mode -> {
                 if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
-                    pref.edit().putString(AppConstants.SAVE_THEME, "1").commit()
+                    pref.edit().putString(AppConstants.SAVE_THEME, "1").apply()
                     changeTheme()
                     dark.isVisible = false
                     bright.isVisible = true
@@ -293,7 +293,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_bright_mode -> {
                 if (pref.getString(AppConstants.SAVE_THEME, "") == "1"){
-                    pref.edit().putString(AppConstants.SAVE_THEME, "0").commit()
+                    pref.edit().putString(AppConstants.SAVE_THEME, "0").apply()
                     changeTheme()
                     dark.isVisible = true
                     bright.isVisible = false
@@ -302,7 +302,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_my_reports -> {
                 reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "0").commit()
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "0").apply()
                 dark.isVisible = false
                 bright.isVisible = false
                 map.isVisible = true
@@ -310,14 +310,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_all_reports -> {
                 reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "1").commit()
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "1").apply()
                 dark.isVisible = false
                 bright.isVisible = false
                 map.isVisible = true
             }
             R.id.nav_map -> {
                 changeTheme()
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").commit()
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
                 if(pref.getString(AppConstants.SAVE_THEME, "") == "0"){
                     dark.isVisible = true
                     bright.isVisible = false
@@ -337,7 +337,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 map.isVisible = false
             }
             R.id.nav_zone -> {
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "2").commit()
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "2").apply()
                 zonesFragment = ZonesFragment.newInstance()
                 changeFragment(R.id.fragment_map, zonesFragment)
                 map.isVisible = true
