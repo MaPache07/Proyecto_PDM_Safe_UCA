@@ -42,7 +42,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBottomSheetDialog : BottomSheetDialog
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
-    //private lateinit var flag : TextView
     private lateinit var auth: FirebaseAuth
     var arrayPolygon = ArrayList<Polygon>()
     lateinit var polygon : Polygon
@@ -150,6 +149,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         i++
                     }
                     mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, arrayList)
+                }
+                else if(zone.level == 1){
+                    click?.newReportClick(marker.position, zone.id, -1)
+                    mBottomSheetDialog.dismiss()
                 }
             } else{
                 click?.newReportClick(marker.position, zone.id, -1)

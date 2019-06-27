@@ -57,7 +57,7 @@ class NewReportActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Ingrese todos los datos", Toast.LENGTH_LONG).show()
             } else{
                 val retroRepo = Report("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
-                    "No Resuelto", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
+                    "Pending", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
                     latLng.latitude, latLng.longitude, idZone, level)
                 reportViewModel.postReport(retroRepo)
                 setResult(Activity.RESULT_OK)

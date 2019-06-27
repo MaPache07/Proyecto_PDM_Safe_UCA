@@ -8,4 +8,5 @@ object AppConstants {
     val BOTTOM_SHEET_DIALOG_kEY = "BottomSheetDialogKey"
     val REQUEST_CODE = 7
     val SAVE_THEME = "SaveTheme"
+    val SAVE_FRAGMENT = "SaveFragment"
 }
