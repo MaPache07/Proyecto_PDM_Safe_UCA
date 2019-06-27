@@ -22,10 +22,4 @@
         app:menu="@menu/activity_main_drawer"
         android:background="#313848"
         app:itemTextColor="#8adfdc"/>
-    <TextView
-        android:id="@+id/tv_escondido2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:text="0"/>
 </androidx.drawerlayout.widget.DrawerLayout>

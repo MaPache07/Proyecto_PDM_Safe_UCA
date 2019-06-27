@@ -1,6 +1,8 @@
 package com.mapache.safeuca.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +31,7 @@ class ReportsFragment : Fragment() {
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: ReportAdapter
-    private lateinit var flag : TextView
+    lateinit var pref : SharedPreferences
 
     companion object{
         fun newInstance (): ReportsFragment {
@@ -41,9 +43,9 @@ class ReportsFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_reports,container,false)
         auth = FirebaseAuth.getInstance()
-        flag = activity!!.findViewById(R.id.tv_escondido2)
+        pref = context!!.getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        if(flag.text == "0"){
+        if(pref.getString(AppConstants.SAVE_FRAGMENT, "") == "0"){
             reportViewModel.getReportPerUser(auth.currentUser!!.email).observe(this, Observer { match ->
                 viewAdapter.dataChange(match)
             })

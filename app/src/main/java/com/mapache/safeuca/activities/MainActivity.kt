@@ -45,16 +45,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var reportViewModel : ReportViewModel
     val MY_REQUEST_CODE : Int = 123
     lateinit var pref : SharedPreferences
+    lateinit var pref2 : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         pref = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-
-        if(pref.getString(AppConstants.SAVE_THEME, "") == ""){
-            pref.edit().putString(AppConstants.SAVE_THEME, "0").commit()
-        }
+        pref2 = getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
 
         auth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -86,8 +84,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        if(savedInstanceState != null){
+            if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "") changeTheme()
+            else {
+                if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "0"){
+                    reportsFragment = ReportsFragment.newInstance()
+                    changeFragment(R.id.fragment_map, reportsFragment)
+                }
+                else if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "1"){
+                    reportsFragment = ReportsFragment.newInstance()
+                    changeFragment(R.id.fragment_map, reportsFragment)
+                }
+                else if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "2"){
+                    zonesFragment = ZonesFragment.newInstance()
+                    changeFragment(R.id.fragment_map, zonesFragment)
+                }
+                dark.isVisible = false
+                bright.isVisible = false
+                map.isVisible = true
+            }
+        }
+        else{
+            if(pref.getString(AppConstants.SAVE_THEME, "") == "") pref.edit().putString(AppConstants.SAVE_THEME, "0").commit()
+            changeTheme()
+        }
+
         navView.setNavigationItemSelectedListener(this)
-        changeTheme()
         if(auth.currentUser != null){
             val user = FirebaseAuth.getInstance().currentUser
             Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
@@ -99,6 +121,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             bright.isVisible = false
         }
         map.isVisible = false
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("1", 1)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -199,6 +226,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dark.isVisible = false
             bright.isVisible = true
         }
+        if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
+            map.isVisible = true
+            dark.isVisible = false
+            bright.isVisible = false
+        }
         return true
     }
 
@@ -268,7 +300,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_my_reports -> {
                 reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
-                tv_escondido2.text = "0"
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "0").commit()
                 dark.isVisible = false
                 bright.isVisible = false
                 map.isVisible = true
@@ -276,13 +308,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_all_reports -> {
                 reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
-                tv_escondido2.text = "1"
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "1").commit()
                 dark.isVisible = false
                 bright.isVisible = false
                 map.isVisible = true
             }
             R.id.nav_map -> {
                 changeTheme()
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").commit()
                 if(pref.getString(AppConstants.SAVE_THEME, "") == "0"){
                     dark.isVisible = true
                     bright.isVisible = false
@@ -302,9 +335,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 map.isVisible = false
             }
             R.id.nav_zone -> {
+                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "2").commit()
                 zonesFragment = ZonesFragment.newInstance()
                 changeFragment(R.id.fragment_map, zonesFragment)
                 map.isVisible = true
+                dark.isVisible = false
+                bright.isVisible = false
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

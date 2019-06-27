@@ -42,7 +42,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBottomSheetDialog : BottomSheetDialog
     private lateinit var reportViewModel : ReportViewModel
     private lateinit var marker : Marker
-    //private lateinit var flag : TextView
     private lateinit var auth: FirebaseAuth
     var arrayPolygon = ArrayList<Polygon>()
     lateinit var polygon : Polygon
