@@ -203,9 +203,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mMap.setOnMapClickListener { latLng ->
             if (auth.currentUser != null){
                 if(click?.checkNetworkStatus()!!){
-                    marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
-                    mBottomSheetDialog.setContentView(contentInitialDialog)
-                    mBottomSheetDialog.show()
+                    if(inUca(latLng)){
+                        marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
+                        mBottomSheetDialog.setContentView(contentInitialDialog)
+                        mBottomSheetDialog.show()
+                    } else{
+                        Toast.makeText(context, "Reports must be inside UCA", Toast.LENGTH_LONG).show()
+                    }
+
                 } else{
                     Toast.makeText(context, "Internet required to report", Toast.LENGTH_LONG).show()
                 }
@@ -255,6 +260,32 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 arrayPolygon.add(polygon)
             }
         })
+    }
+
+    fun inUca(cor : LatLng) : Boolean{
+        for(pp in arrayPolygon){
+            if((pp.tag as Zone).id == "5d13aa0b5003f10017fb2cc0" ){
+                var angulo = 0.0
+                var i = 0
+                while(i < pp.points.size-1){
+                    var j = 1
+                    if(i == pp.points.size-2){
+                        j = -i
+                    }
+                    var x1 = cor.latitude - pp.points[i].latitude
+                    var y1 = cor.longitude - pp.points[i].longitude
+                    var x2 = cor.latitude - pp.points[i+j].latitude
+                    var y2 = cor.longitude - pp.points[i+j].longitude
+                    var xy1 = x1*x2 + y1*y2
+                    var xy2 = Math.sqrt(Math.pow(x1, 2.0)+Math.pow(y1, 2.0))*Math.sqrt(Math.pow(x2, 2.0)+Math.pow(y2, 2.0))
+                    angulo += Math.acos(xy1/xy2)
+                    i++
+                }
+                angulo = Math.floor(angulo*1e4)/1e4
+                return angulo == 6.2831
+            }
+        }
+        return false
     }
 
     fun inZone(cor : LatLng) : Boolean{
