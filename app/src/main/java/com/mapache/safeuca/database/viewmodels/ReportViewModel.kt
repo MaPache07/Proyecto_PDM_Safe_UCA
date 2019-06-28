@@ -5,14 +5,10 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapache.safeuca.database.RoomDB
 import com.mapache.safeuca.database.entities.Report
-import com.mapache.safeuca.database.entities.Rol
-import com.mapache.safeuca.database.entities.User
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.repositories.ReportRepository
-import com.mapache.safeuca.models.ReportRetro
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,20 +17,14 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
     private val repository :ReportRepository
     val allReports : LiveData<List<Report>>
     val allZones : LiveData<List<Zone>>
-    val allUsers : LiveData<List<User>>
-    val allRols : LiveData<List<Rol>>
 
     init {
         val reportDao = RoomDB.getDatabase(app).reportDao()
         val zoneDao = RoomDB.getDatabase(app).zoneDao()
-        val userDao = RoomDB.getDatabase(app).userDao()
-        val rolDao = RoomDB.getDatabase(app).rolDao()
 
-        repository = ReportRepository(reportDao, zoneDao, userDao, rolDao)
+        repository = ReportRepository(reportDao, zoneDao)
         allReports = repository.allReports
         allZones = repository.allZones
-        allUsers = repository.allUsers
-        allRols = repository.allRols
     }
 
     fun insertReport(report : Report) = viewModelScope.launch(Dispatchers.IO){
@@ -43,13 +33,6 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun insertZone(zone : Zone) = viewModelScope.launch(Dispatchers.IO){
         repository.insertZone(zone)
-    }
-    fun insertUser(user : User) = viewModelScope.launch(Dispatchers.IO){
-        repository.insertUser(user)
-    }
-
-    fun insertRol(rol : Rol) = viewModelScope.launch(Dispatchers.IO){
-        repository.insertRol(rol)
     }
 
     fun getReportsAsync() = viewModelScope.launch {
@@ -89,10 +72,6 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun postReport(reportRetro: Report) = viewModelScope.launch(Dispatchers.IO){
         repository.postReport(reportRetro).execute()
-        /*val response : Call<DefaultResponse> = repository.postReport(reportRetro)
-        if(response.execute().isSuccessful){
-            Log.d("Hola", "Funciona")
-        }*/
     }
 
     fun getReport(id : String) = repository.getReport(id)
@@ -100,10 +79,6 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
     fun getReportsPerZone(id : String) = repository.allReportsPerZone(id)
 
     fun getZone(id : String) = repository.getZone(id)
-
-    fun getUser(mail : String) = repository.getUser(mail)
-
-    fun getRol(id : Int) = repository.getRol(id)
 
     fun getReportPerUser(mail : String?) = repository.getReportPerUser(mail!!)
 

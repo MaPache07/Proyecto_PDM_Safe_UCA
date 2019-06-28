@@ -3,27 +3,20 @@ package com.mapache.safeuca.database.repositories
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.mapache.safeuca.database.daos.ReportDao
-import com.mapache.safeuca.database.daos.RolDao
-import com.mapache.safeuca.database.daos.UserDao
 import com.mapache.safeuca.database.daos.ZoneDao
 import com.mapache.safeuca.database.entities.Report
-import com.mapache.safeuca.database.entities.Rol
-import com.mapache.safeuca.database.entities.User
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.models.DefaultResponse
 import com.mapache.safeuca.models.ReportRetro
 import com.mapache.safeuca.service.ReportService
 import kotlinx.coroutines.Deferred
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 
-class ReportRepository(private val reportDao: ReportDao, private val zoneDao: ZoneDao, private val userDao: UserDao, private val rolDao: RolDao) {
+class ReportRepository(private val reportDao: ReportDao, private val zoneDao: ZoneDao) {
 
     val allReports : LiveData<List<Report>> = reportDao.getAllReport()
     val allZones : LiveData<List<Zone>> = zoneDao.getAllZone()
-    val allUsers : LiveData<List<User>> = userDao.getAllUsers()
-    val allRols : LiveData<List<Rol>> = rolDao.getAllRol()
 
     @WorkerThread
     suspend fun insertReport(report : Report){
@@ -31,18 +24,8 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
     }
 
     @WorkerThread
-    suspend fun insertUser(user : User){
-        userDao.insett(user)
-    }
-
-    @WorkerThread
     suspend fun insertZone(zone : Zone){
         zoneDao.insert(zone)
-    }
-
-    @WorkerThread
-    suspend fun insertRol(rol : Rol){
-        rolDao.insert(rol)
     }
 
     fun allReportsPerZone(idZone : String)  = reportDao.getReportPerZone(idZone)
@@ -50,10 +33,6 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
     fun getReport(id : String) = reportDao.getReport(id)
 
     fun getZone(id : String) = zoneDao.getZone(id)
-
-    fun getUser(mail : String) = userDao.getUser(mail)
-
-    fun getRol(id : Int) = rolDao.getRol(id)
 
     fun getReportPerUser(mail : String) = reportDao.getReportPerUser(mail)
 

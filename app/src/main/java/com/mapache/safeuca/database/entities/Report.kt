@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
 @Entity(tableName = "report_table",
-        foreignKeys = [ForeignKey(entity = Zone::class, parentColumns = ["id"], childColumns = ["idZone"])/*,
-                    ForeignKey(entity = User::class, parentColumns = ["mail"], childColumns = ["mailUser"])*/])
+        foreignKeys = [ForeignKey(entity = Zone::class, parentColumns = ["id"], childColumns = ["idZone"])])
 data class Report(
     @PrimaryKey
     @field:Json(name = "_id") val id : String,
