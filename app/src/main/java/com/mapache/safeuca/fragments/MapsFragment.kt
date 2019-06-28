@@ -5,13 +5,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -53,7 +51,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     var flagZone = false
     var flagBuilding = false
     var click : newReportClick? = null
-    lateinit var pref : SharedPreferences
+    lateinit var mapTheme : SharedPreferences
 
     companion object{
         fun newInstance (): MapsFragment {
@@ -62,9 +60,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    interface changeTheme{
-        fun changeTheme()
-    }
     interface newReportClick{
         fun newReportClick(latLng: LatLng, idZone : String, level: Int)
         fun checkNetworkStatus() : Boolean
@@ -80,27 +75,23 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_maps,container,false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        initData()
+        setOnClickListeners()
+        return view
+    }
+
+    fun initData(){
         auth = FirebaseAuth.getInstance()
-        Log.d("Hola", "OnCreateView MapsFragment")
 
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         mBottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
 
-        if(click?.checkNetworkStatus()!!){
-            reportViewModel.getReportsAsync()
-            reportViewModel.getZonesAzync()
-        } else{
-            Toast.makeText(context, "Internet required to see map", Toast.LENGTH_LONG).show()
-        }
-
-        pref = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        mapTheme = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
 
         contentInitialDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
         contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)
         contentBuildingDialog = layoutInflater.inflate(R.layout.building_dialog, null)
 
-        setOnClickListeners()
-        return view
     }
 
     fun setOnClickListeners(){
@@ -187,14 +178,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         click = null
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
+    fun setMapTheme(){
+        if (mapTheme.getString(AppConstants.SAVE_THEME, "") == "0"){
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_standar))
         }
         else{
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_night))
         }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        setMapTheme()
         initMap(mMap)
         initZones(mMap)
         val uca = LatLng(13.6816, -89.235)

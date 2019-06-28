@@ -9,4 +9,5 @@ object AppConstants {
     val REQUEST_CODE = 7
     val SAVE_THEME = "SaveTheme"
     val SAVE_FRAGMENT = "SaveFragment"
+    val MY_REQUEST_CODE : Int = 123
 }

@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.View
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -33,11 +34,13 @@ import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.fragments.ZonesFragment
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.MY_REQUEST_CODE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
+import java.util.jar.Manifest
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, MapsFragment.changeTheme {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick {
 
     private lateinit var fragmentMap : MapsFragment
     private lateinit var auth: FirebaseAuth
@@ -45,28 +48,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var zonesFragment : ZonesFragment
     lateinit var providers : List<AuthUI.IdpConfig>
     private lateinit var reportViewModel : ReportViewModel
-    val MY_REQUEST_CODE : Int = 123
-    lateinit var pref : SharedPreferences
-    lateinit var pref2 : SharedPreferences
+    lateinit var saveTheme : SharedPreferences
+    lateinit var saveFragment : SharedPreferences
+
+    lateinit var logIn : MenuItem
+    lateinit var map : MenuItem
+    lateinit var myReports : MenuItem
+    lateinit var allReports : MenuItem
+    lateinit var dark : MenuItem
+    lateinit var bright : MenuItem
+    lateinit var logout : MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initData()
 
-        pref = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-        pref2 = getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
+        if(checkNetworkStatus()){
+            reportViewModel.getReportsAsync()
+            reportViewModel.getZonesAzync()
+        } else{
+            Toast.makeText(this, "Internet required to see map", Toast.LENGTH_LONG).show()
+        }
 
-        auth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this@MainActivity)
-        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-
-        Log.d("Hola", "OnCreate MainActivity")
-
-        providers = Arrays.asList<AuthUI.IdpConfig>(
-            AuthUI.IdpConfig.EmailBuilder().build(),//email login
-            AuthUI.IdpConfig.GoogleBuilder().build()) //google login
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -75,40 +82,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        val logIn = nav_view.menu[0]
-        val map = nav_view.menu[1]
-        val myReports = nav_view.menu[2]
-        val allReports = nav_view.menu[3]
-        val dark = nav_view.menu[4]
-        val bright = nav_view.menu[5]
-        val logout = nav_view.menu[6]
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
         var flag = true
         if(savedInstanceState != null){
-            if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "") changeTheme()
+            if(saveFragment.getString(AppConstants.SAVE_FRAGMENT, "") == "")
+                changeFragment(R.id.fragment_map, fragmentMap)
             else {
-                if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "0"){
-                    reportsFragment = ReportsFragment.newInstance()
-                    changeFragment(R.id.fragment_map, reportsFragment)
-                }
-                else if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "1"){
-                    reportsFragment = ReportsFragment.newInstance()
-                    changeFragment(R.id.fragment_map, reportsFragment)
-                }
-                else if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") == "2"){
-                    zonesFragment = ZonesFragment.newInstance()
-                    changeFragment(R.id.fragment_map, zonesFragment)
+                when(saveFragment.getString(AppConstants.SAVE_FRAGMENT, "")){
+                    "0" -> changeFragment(R.id.fragment_map, reportsFragment)
+                    "1" -> changeFragment(R.id.fragment_map, reportsFragment)
+                    "2" -> changeFragment(R.id.fragment_map, zonesFragment)
                 }
                 dark.isVisible = false
                 bright.isVisible = false
-                map.isVisible = true
             }
             flag = false
         }
         else{
-            if(pref.getString(AppConstants.SAVE_THEME, "") == "") pref.edit().putString(AppConstants.SAVE_THEME, "0").apply()
-            changeTheme()
+            if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "")
+                saveTheme.edit().putString(AppConstants.SAVE_THEME, "0").apply()
+            changeFragment(R.id.fragment_map, fragmentMap)
         }
 
         navView.setNavigationItemSelectedListener(this)
@@ -122,7 +118,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dark.isVisible = true
             bright.isVisible = false
         }
-        map.isVisible = false
+    }
+
+    fun initData(){
+        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+
+        saveTheme = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        saveFragment = getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
+        fragmentMap = MapsFragment.newInstance()
+        reportsFragment = ReportsFragment.newInstance()
+        zonesFragment = ZonesFragment.newInstance()
+        auth = FirebaseAuth.getInstance()
+
+        logIn = nav_view.menu[0]
+        map = nav_view.menu[1]
+        myReports = nav_view.menu[2]
+        allReports = nav_view.menu[3]
+        dark = nav_view.menu[4]
+        bright = nav_view.menu[5]
+        logout = nav_view.menu[6]
+
+        providers = Arrays.asList<AuthUI.IdpConfig>(
+            AuthUI.IdpConfig.EmailBuilder().build(),//email login
+            AuthUI.IdpConfig.GoogleBuilder().build()) //google login
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -143,15 +161,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (requestCode == MY_REQUEST_CODE) {
             val response = IdpResponse.fromResultIntent(data)
-            val logIn = nav_view.menu[0]
-            val map = nav_view.menu[1]
-            val myReports = nav_view.menu[2]
-            val allReports = nav_view.menu[3]
-            val dark = nav_view.menu[4]
-            val bright = nav_view.menu[5]
-            val logout = nav_view.menu[6]
             if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(this, "Log in successful", Toast.LENGTH_LONG).show()
                 correo_en_nav.text = user!!.email
@@ -160,21 +170,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 logout.isVisible = true
                 myReports.isVisible = true
                 allReports.isVisible = true
-
-                // ...
-            } else {
-                Toast.makeText(this, "Log in error " + response, Toast.LENGTH_LONG).show()
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
+            } else Toast.makeText(this, "Log in error " + response, Toast.LENGTH_LONG).show()
         }
         if(requestCode == AppConstants.REQUEST_CODE){
-            if(resultCode == Activity.RESULT_OK){
-                Log.d("Hola", "Entro")
-                changeTheme()
-            }
+            if(resultCode == Activity.RESULT_OK)
+                changeFragment(R.id.fragment_map, fragmentMap)
         }
     }
 
@@ -183,11 +183,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .setAvailableProviders(providers)
             .setTheme(R.style.OpcionesInicioSesion)
             .build(),MY_REQUEST_CODE)
-    }
-
-    override fun changeTheme(){
-        fragmentMap = MapsFragment.newInstance()
-        changeFragment(R.id.fragment_map, fragmentMap)
     }
 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
@@ -205,66 +200,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
-                changeTheme()
+            if(saveFragment.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
+                saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
+                changeFragment(R.id.fragment_map, fragmentMap)
             }
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        val logIn = nav_view.menu[0]
-        val map = nav_view.menu[1]
-        val myReports = nav_view.menu[2]
-        val allReports = nav_view.menu[3]
-        val dark = nav_view.menu[4]
-        val bright = nav_view.menu[5]
-        val logout = nav_view.menu[6]
         if(auth.currentUser != null){
             correo_en_nav.text = auth.currentUser!!.email
-            allReports.isVisible = true
             myReports.isVisible = true
             nombre_en_nav.text = auth.currentUser!!.displayName
-            dark.isVisible = true
         }
-        else{
-            allReports.isVisible = true
-            myReports.isVisible = false
-            dark.isVisible = true
-        }
-        if(pref.getString(AppConstants.SAVE_THEME, "") == "1"){
+        else myReports.isVisible = false
+        if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "1"){
             dark.isVisible = false
             bright.isVisible = true
         }
-        if(pref2.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
-            map.isVisible = true
+        if(saveFragment.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
             dark.isVisible = false
             bright.isVisible = false
         }
         return true
     }
 
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            else -> super.onOptionsItemSelected(item)
-        }
-    }*/
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        val logIn = nav_view.menu[0]
-        val map = nav_view.menu[1]
-        val myReports = nav_view.menu[2]
-        val allReports = nav_view.menu[3]
-        val dark = nav_view.menu[4]
-        val bright = nav_view.menu[5]
-        val logout = nav_view.menu[6]
-        val zones = nav_view.menu[7]
         when (item.itemId) {
             R.id.nav_log_in -> {
                 showSignInOptions()
@@ -277,58 +239,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         correo_en_nav.text = "User not logged in"
                         nombre_en_nav.text = "User"
                         logIn.isVisible = true
-                        map.isVisible = false
                         logout.isVisible = false
                         myReports.isVisible = false
-                        allReports.isVisible = true
-                        if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
+                        if (saveTheme.getString(AppConstants.SAVE_THEME, "") == "0"){
                             dark.isVisible = true
                             bright.isVisible = false
-                            changeTheme()
+                            changeFragment(R.id.fragment_map, fragmentMap)
                         }
                         else{
                             dark.isVisible = false
                             bright.isVisible = true
-                            changeTheme()
+                            changeFragment(R.id.fragment_map, fragmentMap)
                         }
                     }
             }
             R.id.nav_dark_mode -> {
-                if (pref.getString(AppConstants.SAVE_THEME, "") == "0"){
-                    pref.edit().putString(AppConstants.SAVE_THEME, "1").apply()
-                    changeTheme()
+                if (saveTheme.getString(AppConstants.SAVE_THEME, "") == "0"){
+                    saveTheme.edit().putString(AppConstants.SAVE_THEME, "1").apply()
+                    fragmentMap.setMapTheme()
                     dark.isVisible = false
                     bright.isVisible = true
                 }
             }
             R.id.nav_bright_mode -> {
-                if (pref.getString(AppConstants.SAVE_THEME, "") == "1"){
-                    pref.edit().putString(AppConstants.SAVE_THEME, "0").apply()
-                    changeTheme()
+                if (saveTheme.getString(AppConstants.SAVE_THEME, "") == "1"){
+                    saveTheme.edit().putString(AppConstants.SAVE_THEME, "0").apply()
+                    fragmentMap.setMapTheme()
                     dark.isVisible = true
                     bright.isVisible = false
                 }
             }
             R.id.nav_my_reports -> {
-                reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "0").apply()
+                saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "0").apply()
                 dark.isVisible = false
                 bright.isVisible = false
-                map.isVisible = true
             }
             R.id.nav_all_reports -> {
-                reportsFragment = ReportsFragment.newInstance()
                 changeFragment(R.id.fragment_map, reportsFragment)
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "1").apply()
+                saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "1").apply()
                 dark.isVisible = false
                 bright.isVisible = false
-                map.isVisible = true
             }
             R.id.nav_map -> {
-                changeTheme()
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
-                if(pref.getString(AppConstants.SAVE_THEME, "") == "0"){
+                changeFragment(R.id.fragment_map, fragmentMap)
+                saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
+                if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "0"){
                     dark.isVisible = true
                     bright.isVisible = false
                 }
@@ -336,21 +292,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     bright.isVisible = true
                     dark.isVisible = false
                 }
-                if (auth.currentUser != null){
-                    allReports.isVisible = true
-                    myReports.isVisible = true
-                }
-                else{
-                    allReports.isVisible = true
-                    myReports.isVisible = false
-                }
-                map.isVisible = false
             }
             R.id.nav_zone -> {
-                pref2.edit().putString(AppConstants.SAVE_FRAGMENT, "2").apply()
-                zonesFragment = ZonesFragment.newInstance()
+                saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "2").apply()
                 changeFragment(R.id.fragment_map, zonesFragment)
-                map.isVisible = true
                 dark.isVisible = false
                 bright.isVisible = false
             }
