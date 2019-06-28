@@ -199,19 +199,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             if (auth.currentUser != null){
                 if(click?.checkNetworkStatus()!!){
                     if(inUca(latLng)){
-                        marker = mMap.addMarker(MarkerOptions().position(latLng).title("Zona de riesgo"))
+                        marker = mMap.addMarker(MarkerOptions().position(latLng))
                         mBottomSheetDialog.setContentView(contentInitialDialog)
                         mBottomSheetDialog.show()
                     } else{
-                        Toast.makeText(context, "Reports must be inside UCA", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, getString(R.string.reports_inside_uca), Toast.LENGTH_LONG).show()
                     }
 
                 } else{
-                    Toast.makeText(context, "Internet required to report", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.internet_required), Toast.LENGTH_LONG).show()
                 }
             }
             else{
-                Toast.makeText(context, "Log in to report something", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getString(R.string.logIn_to_report), Toast.LENGTH_LONG).show()
             }
         }
 

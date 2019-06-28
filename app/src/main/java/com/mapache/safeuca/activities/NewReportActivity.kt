@@ -31,8 +31,8 @@ import retrofit2.Response
 class NewReportActivity : AppCompatActivity() {
 
     private lateinit var reportViewModel : ReportViewModel
-    val arrayDanger : Array<String> = arrayOf("Low", "Moderate", "High")
-    val arrayType : Array<String> = arrayOf("Report", "Maintenance")
+    val arrayDanger : Array<String> = arrayOf(getString(R.string.low), getString(R.string.moderate), getString(R.string.high))
+    val arrayType : Array<String> = arrayOf(getString(R.string.report), getString(R.string.maintenance))
     private lateinit var auth: FirebaseAuth
     lateinit var dangerSelected : String
     lateinit var typeSelected : String
@@ -57,13 +57,13 @@ class NewReportActivity : AppCompatActivity() {
     fun setOnClickListeners(){
         new_report_ok.setOnClickListener {
             if(TextUtils.isEmpty(new_report_name.text) && TextUtils.isEmpty(new_report_description.text)){
-                Toast.makeText(applicationContext, "Enter all data", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, getString(R.string.all_data), Toast.LENGTH_LONG).show()
             } else{
                 val retroRepo = Report("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
-                    "Pending", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
+                    getString(R.string.pending), auth.currentUser?.email!!, new_report_description.text.trim().toString(),
                     latLng.latitude, latLng.longitude, idZone, level)
                 if(checkNetworkStatus()) reportViewModel.postReport(retroRepo)
-                else Toast.makeText(applicationContext, "Internet required to report", Toast.LENGTH_LONG).show()
+                else Toast.makeText(applicationContext, getString(R.string.internet_required), Toast.LENGTH_LONG).show()
                 setResult(Activity.RESULT_OK)
                 finish()
             }

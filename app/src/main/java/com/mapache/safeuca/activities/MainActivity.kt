@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             reportViewModel.getReportsAsync()
             reportViewModel.getZonesAzync()
         } else{
-            Toast.makeText(this, "Internet required to see map", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.internet_required_map), Toast.LENGTH_LONG).show()
         }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -163,14 +163,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
-                Toast.makeText(this, "Log in successful", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.logIn_successful), Toast.LENGTH_LONG).show()
                 correo_en_nav.text = user!!.email
                 nombre_en_nav.text = user!!.displayName
                 logIn.isVisible = false
                 logout.isVisible = true
                 myReports.isVisible = true
                 allReports.isVisible = true
-            } else Toast.makeText(this, "Log in error " + response, Toast.LENGTH_LONG).show()
+            } else Toast.makeText(this, getString(R.string.logIn_error), Toast.LENGTH_LONG).show()
         }
         if(requestCode == AppConstants.REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK)
@@ -235,9 +235,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener {
-                        Toast.makeText(this, "Log out successful", Toast.LENGTH_LONG).show()
-                        correo_en_nav.text = "User not logged in"
-                        nombre_en_nav.text = "User"
+                        Toast.makeText(this, getString(R.string.logOut_successful), Toast.LENGTH_LONG).show()
+                        correo_en_nav.text = getString(R.string.user_not_logged_in)
+                        nombre_en_nav.text = getString(R.string.user_nav)
                         logIn.isVisible = true
                         logout.isVisible = false
                         myReports.isVisible = false
