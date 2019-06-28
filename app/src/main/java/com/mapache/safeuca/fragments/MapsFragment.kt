@@ -303,7 +303,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     i++
                 }
                 angulo = Math.floor(angulo*1e4)/1e4
-                if(angulo == 6.2831){
+                if(angulo >= 6.2831){
                     polygon = pp
                     return true
                 }
