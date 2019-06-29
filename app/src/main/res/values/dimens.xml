@@ -12,4 +12,7 @@
     <dimen name="normalText">24sp</dimen>
     <dimen name="smallText">18sp</dimen>
     <dimen name="superSmallText">12sp</dimen>
+    <dimen name="margin_top_fragments">64dp</dimen>
+    <dimen name="smallMargin">4dp</dimen>
+    <dimen name="marginBottom">18dp</dimen>
 </resources>

@@ -3,8 +3,10 @@ package com.mapache.safeuca.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mapache.safeuca.R
+import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import kotlinx.android.synthetic.main.card_view_zone.view.*
 

@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import com.mapache.safeuca.fragments.InfoZoneFragment
 import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.fragments.ZonesFragment
@@ -40,7 +41,7 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
 import java.util.jar.Manifest
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, ZonesFragment.ChangeFragmentZone {
 
     private lateinit var fragmentMap : MapsFragment
     private lateinit var auth: FirebaseAuth
@@ -156,6 +157,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else false
     }
 
+    override fun changeFragmentZone(infoZoneFragment: InfoZoneFragment) {
+        changeFragment(R.id.fragment_map, infoZoneFragment)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -201,8 +206,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             if(saveFragment.getString(AppConstants.SAVE_FRAGMENT, "") != ""){
-                saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
-                changeFragment(R.id.fragment_map, fragmentMap)
+                if(saveFragment.getString(AppConstants.SAVE_FRAGMENT, "") == "3")
+                    changeFragment(R.id.fragment_map, zonesFragment)
+                else{
+                    saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
+                    changeFragment(R.id.fragment_map, fragmentMap)
+                    map.isChecked = true
+                }
             }
         }
     }
@@ -212,6 +222,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             correo_en_nav.text = auth.currentUser!!.email
             myReports.isVisible = true
             nombre_en_nav.text = auth.currentUser!!.displayName
+            //imageView.setImageURI(auth.currentUser!!.photoUrl)
         }
         else myReports.isVisible = false
         if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "1"){
@@ -270,14 +281,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             R.id.nav_my_reports -> {
-                changeFragment(R.id.fragment_map, reportsFragment)
                 saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "0").apply()
+                if(!reportsFragment.isVisible)
+                    changeFragment(R.id.fragment_map, reportsFragment)
+                else reportsFragment.changeList()
                 dark.isVisible = false
                 bright.isVisible = false
             }
             R.id.nav_all_reports -> {
-                changeFragment(R.id.fragment_map, reportsFragment)
                 saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "1").apply()
+                if(!reportsFragment.isVisible)
+                    changeFragment(R.id.fragment_map, reportsFragment)
+                else reportsFragment.changeList()
                 dark.isVisible = false
                 bright.isVisible = false
             }

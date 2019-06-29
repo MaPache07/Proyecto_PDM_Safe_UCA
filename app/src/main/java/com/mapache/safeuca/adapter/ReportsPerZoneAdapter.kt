@@ -9,7 +9,7 @@ import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
 import kotlinx.android.synthetic.main.card_view_report_simple.view.*
 
-class ReportsPerZoneAdapter (var items : List<Report>) : RecyclerView.Adapter<ReportsPerZoneAdapter.viewholder>(){
+class ReportsPerZoneAdapter (var items : List<Report>, val pending : String, val done : String) : RecyclerView.Adapter<ReportsPerZoneAdapter.viewholder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view_report_simple,parent,false)
         return viewholder(view)
@@ -26,11 +26,13 @@ class ReportsPerZoneAdapter (var items : List<Report>) : RecyclerView.Adapter<Re
         notifyDataSetChanged()
     }
 
-    class viewholder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+    inner class viewholder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item : Report) = with(itemView){
             nombre_de_reportes_en_lista_simple.text = item.name
-            status_del_reporte_en_lista_simple.text = item.status
+            if(item.status == "0")
+                status_del_reporte_en_lista_simple.text = pending
+            else status_del_reporte_en_lista_simple.text = done
             if(item.level == -1) floor_tv.isVisible = false
             else piso_del_reporte_en_lista_simple.text = item.level.toString()
         }

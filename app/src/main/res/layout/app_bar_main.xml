@@ -10,13 +10,7 @@
         android:id="@+id/fragment_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_status_bar"
-        android:layout_margin="@dimen/general_padding"
-        android:background="@drawable/skin_toolbar"
-        android:elevation="4dp"/>
+    <include layout="@layout/app_bar"/>
     <FrameLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"

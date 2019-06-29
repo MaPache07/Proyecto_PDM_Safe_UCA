@@ -12,9 +12,11 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
@@ -31,9 +33,9 @@ import retrofit2.Response
 class NewReportActivity : AppCompatActivity() {
 
     private lateinit var reportViewModel : ReportViewModel
-    val arrayDanger : Array<String> = arrayOf(getString(R.string.low), getString(R.string.moderate), getString(R.string.high))
-    val arrayType : Array<String> = arrayOf(getString(R.string.report), getString(R.string.maintenance))
-    private lateinit var auth: FirebaseAuth
+    lateinit var arrayDanger : Array<String>
+    lateinit var arrayType : Array<String>
+    private lateinit var auth : FirebaseAuth
     lateinit var dangerSelected : String
     lateinit var typeSelected : String
     lateinit var latLng : LatLng
@@ -43,8 +45,16 @@ class NewReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_report)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        FirebaseApp.initializeApp(this@NewReportActivity)
+
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         auth = FirebaseAuth.getInstance()
+
+        arrayDanger = arrayOf(getString(R.string.low), getString(R.string.moderate), getString(R.string.high))
+        arrayType = arrayOf(getString(R.string.report), getString(R.string.maintenance))
 
         latLng = intent?.extras?.getParcelable(AppConstants.LATLNT_KEY)!!
         idZone = intent?.extras?.getString(AppConstants.ZONE_KEY)!!
@@ -60,7 +70,7 @@ class NewReportActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, getString(R.string.all_data), Toast.LENGTH_LONG).show()
             } else{
                 val retroRepo = Report("", new_report_name.text.trim().toString(), dangerSelected, typeSelected,
-                    getString(R.string.pending), auth.currentUser?.email!!, new_report_description.text.trim().toString(),
+                    "0", auth.currentUser?.email!!, new_report_description.text.trim().toString(),
                     latLng.latitude, latLng.longitude, idZone, level)
                 if(checkNetworkStatus()) reportViewModel.postReport(retroRepo)
                 else Toast.makeText(applicationContext, getString(R.string.internet_required), Toast.LENGTH_LONG).show()

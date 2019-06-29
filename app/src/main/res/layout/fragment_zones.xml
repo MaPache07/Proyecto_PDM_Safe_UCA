@@ -3,14 +3,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#313848">
+    android:background="@color/colorPrimaryDark">
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recycler_zones"
-        android:layout_marginTop="70dp"
-        android:padding="@dimen/generalPadding"
-        android:background="#313848">
+        android:layout_marginTop="@dimen/margin_top_fragments">
     </androidx.recyclerview.widget.RecyclerView>
-
 </LinearLayout>

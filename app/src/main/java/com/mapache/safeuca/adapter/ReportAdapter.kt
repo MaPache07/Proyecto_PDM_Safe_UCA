@@ -8,7 +8,7 @@ import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
 import kotlinx.android.synthetic.main.card_view.view.*
 
-class ReportAdapter (var items : List<Report>, val clickListener : (Report) -> Unit) : RecyclerView.Adapter<ReportAdapter.viewholder>(){
+class ReportAdapter (var items : List<Report>, val clickListener : (Report) -> Unit, val pending : String, val done : String) : RecyclerView.Adapter<ReportAdapter.viewholder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view,parent,false)
         return viewholder(view)
@@ -25,11 +25,13 @@ class ReportAdapter (var items : List<Report>, val clickListener : (Report) -> U
         notifyDataSetChanged()
     }
 
-    class viewholder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+    inner class viewholder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item : Report, clickListener: (Report) -> Unit) = with(itemView){
             nombre_de_reportes_en_lista.text = item.name
-            status_del_reporte_en_lista.text = item.status
+            if(item.status == "0")
+                status_del_reporte_en_lista.text = pending
+            else status_del_reporte_en_lista.text = done
             this.setOnClickListener{clickListener(item)}
         }
     }

@@ -3,53 +3,49 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#8adfdc"
     android:layout_margin="@dimen/generalPadding">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/skin_list_top"
+        android:orientation="horizontal"
+        android:padding="@dimen/generalPadding">
         <TextView
             android:id="@+id/nombre_de_reportes_en_lista_simple"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"
-            android:textSize="@dimen/smallText"
-            android:hint="prueba"/>
-
+            android:textColor="@color/colorSecundary"
+            android:textSize="@dimen/smallText"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorAccent">
+        android:background="@drawable/skin_list_bottom">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/generalPadding"
-            android:hint="Status:"
+            android:hint="@string/hint_status"
             android:textSize="@dimen/superSmallText"/>
         <TextView
             android:id="@+id/status_del_reporte_en_lista_simple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/generalPadding"
-            android:hint="prueba"
             android:textSize="@dimen/superSmallText"/>
         <TextView
             android:id="@+id/floor_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/generalPadding"
-            android:hint="Floor:"
+            android:hint="@string/hint_floor"
             android:textSize="@dimen/superSmallText"/>
         <TextView
             android:id="@+id/piso_del_reporte_en_lista_simple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/generalPadding"
-            android:hint=""
             android:textSize="@dimen/superSmallText"/>
     </LinearLayout>
 </LinearLayout>

@@ -19,8 +19,10 @@ import com.mapache.safeuca.R
 import com.mapache.safeuca.activities.ReportInfoActivity
 import com.mapache.safeuca.adapter.ReportAdapter
 import com.mapache.safeuca.database.entities.Report
+import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.REPORT_KEY
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_reports.*
 import kotlinx.android.synthetic.main.fragment_reports.view.*
@@ -32,6 +34,7 @@ class ReportsFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: ReportAdapter
     lateinit var pref : SharedPreferences
+    lateinit var viewF : View
 
     companion object{
         fun newInstance (): ReportsFragment {
@@ -39,12 +42,19 @@ class ReportsFragment : Fragment() {
             return  newFragment1
         }
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_reports,container,false)
+        viewF = inflater.inflate(R.layout.fragment_reports,container,false)
         auth = FirebaseAuth.getInstance()
         pref = context!!.getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        changeList()
+        initRecycler(emptyList())
+        return viewF
+    }
+
+    fun changeList(){
         if(pref.getString(AppConstants.SAVE_FRAGMENT, "") == "0"){
             reportViewModel.getReportPerUser(auth.currentUser!!.email).observe(this, Observer { match ->
                 viewAdapter.dataChange(match)
@@ -55,14 +65,12 @@ class ReportsFragment : Fragment() {
                 viewAdapter.dataChange(match)
             })
         }
-        initRecycler(emptyList(), view)
-        return view
     }
 
-    fun initRecycler(match : List<Report>, view: View){
+    fun initRecycler(match : List<Report>){
         viewManager = LinearLayoutManager(context)
-        viewAdapter = ReportAdapter(match,{ matchItem: Report-> onClicked(matchItem)})
-        view.recycler.apply {
+        viewAdapter = ReportAdapter(match,{ matchItem: Report-> onClicked(matchItem)}, getString(R.string.pending), getString(R.string.done))
+        viewF.recycler.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
@@ -71,14 +79,7 @@ class ReportsFragment : Fragment() {
 
     fun onClicked(item : Report){
         val extras = Bundle()
-        extras.putString("name",item.name)
-        extras.putString("danger",item.danger)
-        extras.putString("type",item.type)
-        extras.putString("status",item.status)
-        extras.putString("mail",item.mailUser)
-        extras.putString("desc",item.description)
-        extras.putInt("level",item.level)
-
+        extras.putParcelable(REPORT_KEY, item)
         startActivity(Intent(context, ReportInfoActivity::class.java).putExtras(extras))
     }
 }

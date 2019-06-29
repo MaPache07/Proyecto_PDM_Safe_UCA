@@ -1,5 +1,7 @@
 package com.mapache.safeuca.database.entities
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -20,4 +22,44 @@ data class Report(
     @field:Json(name = "ltn") val ltn : Double,
     @field:Json(name = "idZone") val idZone : String,
     @field:Json(name = "level") val level : Int
-)
+) : Parcelable {
+    constructor(parcel : Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readDouble(),
+        parcel.readDouble(),
+        parcel.readString(),
+        parcel.readInt()
+    )
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(id)
+        dest.writeString(name)
+        dest.writeString(danger)
+        dest.writeString(type)
+        dest.writeString(status)
+        dest.writeString(mailUser)
+        dest.writeString(description)
+        dest.writeDouble(lat)
+        dest.writeDouble(ltn)
+        dest.writeString(idZone)
+        dest.writeInt(level)
+    }
+
+    override fun describeContents(): Int = 0
+
+    companion object CREATOR : Parcelable.Creator<Report> {
+        override fun createFromParcel(parcel: Parcel): Report {
+            return Report(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Report?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

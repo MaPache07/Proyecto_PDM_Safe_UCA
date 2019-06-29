@@ -42,10 +42,21 @@
     <string name="zones">Zones</string>
     <string name="zone_reports">Zone:</string>
     <string name="pending">Pending</string>
+    <string name="done">Done</string>
     <string name="low">Low</string>
     <string name="moderate">Moderate</string>
     <string name="high">High</string>
     <string name="report">Report</string>
     <string name="maintenance">Maintenance</string>
     <string name="reports_inside_uca">Reports must be inside UCA</string>
+    <string name="enter_title">Enter title</string>
+    <string name="write_description">Write description...</string>
+    <string name="action_ok">ok</string>
+    <string name="action_cancel">cancel</string>
+    <string name="type">Type</string>
+    <string name="severity">Severity</string>
+    <string name="hint_status">Status:</string>
+    <string name="hint_floor">Floor:</string>
+    <string name="info_zone">ZONE</string>
+    <string name="info_status">STATUS</string>
 </resources>

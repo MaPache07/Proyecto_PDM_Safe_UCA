@@ -232,7 +232,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     fun initMap(mMap : GoogleMap){
         reportViewModel.allReports.observe(this, Observer {
             it.forEach{
-                mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name)).tag = it
+                if(it.status == "0")
+                    mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name)).tag = it
             }
         })
     }

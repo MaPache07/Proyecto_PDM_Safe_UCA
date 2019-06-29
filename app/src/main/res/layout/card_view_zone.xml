@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#8adfdc"
+    android:orientation="vertical"
     android:layout_margin="@dimen/generalPadding">
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/skin_zone"
+        android:padding="@dimen/generalPadding">
         <TextView
             android:id="@+id/nombre_de_zona_en_lista"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/generalPadding"
-            android:textSize="@dimen/smallText"
-            android:hint="prueba"/>
+            android:textColor="@color/colorSecundary"
+            android:textSize="@dimen/smallText"/>
     </LinearLayout>
 </LinearLayout>
