@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.maps.model.LatLng
@@ -222,7 +223,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             correo_en_nav.text = auth.currentUser!!.email
             myReports.isVisible = true
             nombre_en_nav.text = auth.currentUser!!.displayName
-            //imageView.setImageURI(auth.currentUser!!.photoUrl)
+            Glide.with(this).load(auth.currentUser!!.photoUrl).into(imageView)
         }
         else myReports.isVisible = false
         if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "1"){

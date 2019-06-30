@@ -28,6 +28,7 @@ import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.REPORT_KEY
 import kotlinx.android.synthetic.main.building_dialog.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
 import kotlinx.android.synthetic.main.initial_dialog.view.*
@@ -217,13 +218,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         mMap.setOnMarkerClickListener {
             val extras = Bundle()
-            extras.putString("name",(it.tag as Report).name)
-            extras.putString("danger",(it.tag as Report).danger)
-            extras.putString("type",(it.tag as Report).type)
-            extras.putString("status",(it.tag as Report).status)
-            extras.putString("mail",(it.tag as Report).mailUser)
-            extras.putString("desc",(it.tag as Report).description)
-            extras.putInt("level",(it.tag as Report).level)
+            extras.putParcelable(REPORT_KEY, it.tag as Report)
             startActivity(Intent(context, ReportInfoActivity::class.java).putExtras(extras))
             true
         }
