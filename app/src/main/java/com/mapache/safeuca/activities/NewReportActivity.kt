@@ -8,6 +8,7 @@ import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -90,20 +91,20 @@ class NewReportActivity : AppCompatActivity() {
 
         spinner_danger.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                dangerSelected = parent?.getItemAtPosition(0) as String
+                dangerSelected = "0"
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                dangerSelected = parent?.getItemAtPosition(position) as String
+                dangerSelected = position.toString()
             }
         }
 
         spinner_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                typeSelected = parent?.getItemAtPosition(0) as String
+                typeSelected = "0"
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                typeSelected = parent?.getItemAtPosition(position) as String
+                typeSelected = position.toString()
             }
 
         }

@@ -1,9 +1,15 @@
 package com.mapache.safeuca.fragments
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +17,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -193,8 +201,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         setMapTheme()
         initMap(mMap)
         initZones(mMap)
+
         val uca = LatLng(13.6816, -89.235)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uca, 18F))
+
+        if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(mMap.myLocation.latitude, mMap.myLocation.longitude), 18F))
+        }
 
         mMap.setOnMapClickListener { latLng ->
             if (auth.currentUser != null){
@@ -227,11 +241,28 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     fun initMap(mMap : GoogleMap){
         reportViewModel.allReports.observe(this, Observer {
             it.forEach{
-                if(it.status == "0")
-                    mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name)).tag = it
+                if(it.status == "0"){
+                    val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+                    marker.tag = it
+                    if(it.type == "0") marker.setIcon(context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_report_48dp) })
+                    else marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_maintenance_48dp) })
+                }
             }
         })
     }
+
+    private fun getBitmapFromVectorDrawable(context : Context , drawableId : Int ) : BitmapDescriptor {
+        var drawable : Drawable? = ContextCompat.getDrawable(context, drawableId)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable!!)).mutate()
+        }
+        val bitmap : Bitmap = Bitmap.createBitmap(drawable!!.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+}
 
     fun initZones(mMap: GoogleMap){
         reportViewModel.allZones.observe(this, Observer {

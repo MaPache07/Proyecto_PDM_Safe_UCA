@@ -36,8 +36,13 @@ class InfoReportFragment : Fragment(){
 
     fun bindData(){
         viewF.ar_name.text = report.name
-        viewF.ar_danger.text = report.danger
-        viewF.ar_type.text = report.type
+        if(report.danger == "0") viewF.ar_danger.text = getString(R.string.low)
+        else if(report.danger == "1") viewF.ar_danger.text = getString(R.string.moderate)
+        else if (report.danger == "2") viewF.ar_danger.text = getString(R.string.high)
+
+        if(report.type == "0") viewF.ar_type.text = getString(R.string.report)
+        else viewF.ar_type.text = getString(R.string.maintenance)
+
         viewF.ar_description.text = report.description
         reportViewModel.getZone(report.idZone).observe(this, Observer {
             viewF.ar_zone.text = it.name

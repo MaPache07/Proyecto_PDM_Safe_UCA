@@ -10,4 +10,5 @@ object AppConstants {
     val SAVE_THEME = "SaveTheme"
     val SAVE_FRAGMENT = "SaveFragment"
     val MY_REQUEST_CODE : Int = 123
+    val LOCATION_REQUEST_CODE = 1
 }

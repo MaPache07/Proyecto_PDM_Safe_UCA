@@ -1,9 +1,11 @@
 package com.mapache.safeuca .activities
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -16,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +37,7 @@ import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.fragments.ZonesFragment
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.LOCATION_REQUEST_CODE
 import com.mapache.safeuca.utilities.AppConstants.MY_REQUEST_CODE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -115,6 +120,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             allReports.isVisible = true
             dark.isVisible = true
             bright.isVisible = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            }
         }
     }
 
