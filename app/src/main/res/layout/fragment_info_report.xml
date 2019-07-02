@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginLeft="@dimen/smallMargin">
+                android:layout_marginRight="@dimen/smallMargin">
                 <TextView
                     android:text="@string/info_type"
                     android:textSize="@dimen/superSmallText"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginRight="@dimen/smallMargin">
+                android:layout_marginLeft="@dimen/smallMargin">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
