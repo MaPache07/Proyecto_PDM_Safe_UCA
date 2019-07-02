@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -16,20 +15,18 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.view.View
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
-import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.fragments.InfoZoneFragment
 import com.mapache.safeuca.fragments.MapsFragment
@@ -40,7 +37,6 @@ import com.mapache.safeuca.utilities.AppConstants.MY_REQUEST_CODE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MapsFragment.newReportClick, ZonesFragment.ChangeFragmentZone {
 
@@ -223,7 +219,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             correo_en_nav.text = auth.currentUser!!.email
             myReports.isVisible = true
             nombre_en_nav.text = auth.currentUser!!.displayName
-            Glide.with(this).load(auth.currentUser!!.photoUrl).into(imageView)
+            Glide.with(this).load(auth.currentUser!!.photoUrl).apply(RequestOptions.circleCropTransform()).into(imageView)
         }
         else myReports.isVisible = false
         if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "1"){
@@ -236,7 +232,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         return true
     }
-
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
