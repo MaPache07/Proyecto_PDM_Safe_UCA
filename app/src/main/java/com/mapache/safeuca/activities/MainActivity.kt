@@ -69,13 +69,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         initData()
 
-        if(checkNetworkStatus()){
-            reportViewModel.getReportsAsync()
-            reportViewModel.getZonesAzync()
-        } else{
-            Toast.makeText(this, getString(R.string.internet_required_map), Toast.LENGTH_LONG).show()
-        }
-
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this@MainActivity)
@@ -107,6 +100,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             flag = false
         }
         else{
+            if(checkNetworkStatus()){
+                reportViewModel.getReportsAsync()
+                reportViewModel.getZonesAzync()
+            } else{
+                Toast.makeText(this, getString(R.string.internet_required_map), Toast.LENGTH_LONG).show()
+            }
             if(saveTheme.getString(AppConstants.SAVE_THEME, "") == "")
                 saveTheme.edit().putString(AppConstants.SAVE_THEME, "0").apply()
             changeFragment(R.id.fragment_map, fragmentMap)
@@ -193,6 +192,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         if(requestCode == AppConstants.REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK)
+                if(checkNetworkStatus()){
+                    reportViewModel.getReportsAsync()
+                    reportViewModel.getZonesAzync()
+                }
                 changeFragment(R.id.fragment_map, fragmentMap)
         }
     }
