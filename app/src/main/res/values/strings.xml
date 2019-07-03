@@ -19,7 +19,7 @@
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="settings">Settings</string>
-    <string name="zoneDialog">Is the danger zone in?</string>
+    <string name="zoneDialog">Is the danger zone in</string>
     <string name="si">Yes</string>
     <string name="no">No</string>
     <string name="user_nav">User</string>
@@ -31,13 +31,13 @@
     <string name="logIn_to_report">Log in to report something</string>
     <string name="internet_required">Internet required to report</string>
     <string name="internet_required_map">Internet required to see map</string>
-    <string name="info_name">NAME:</string>
-    <string name="info_danger">DANGER:</string>
-    <string name="info_type">TYPE:</string>
-    <string name="info_state">STATE:</string>
-    <string name="info_user">USER:</string>
-    <string name="info_description">DESCRIPTION:</string>
-    <string name="info_level">FLOOR:</string>
+    <string name="info_name">NAME</string>
+    <string name="info_danger">DANGER</string>
+    <string name="info_type">TYPE</string>
+    <string name="info_state">STATE</string>
+    <string name="info_user">USER</string>
+    <string name="info_description">DESCRIPTION</string>
+    <string name="info_level">FLOOR</string>
     <string name="more_info"><![CDATA[More info -->]]></string>
     <string name="zones">Zones</string>
     <string name="zone_reports">Zone:</string>
@@ -59,4 +59,9 @@
     <string name="hint_floor">Floor:</string>
     <string name="info_zone">ZONE</string>
     <string name="info_status">STATUS</string>
+    <string name="map">Map</string>
+    <string name="my_reports">My reports</string>
+    <string name="all_reports">All reports</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="bright_mode">Bright mode</string>
 </resources>
