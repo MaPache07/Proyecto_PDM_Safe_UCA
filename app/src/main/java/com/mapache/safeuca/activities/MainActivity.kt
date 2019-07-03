@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             flag = false
         }
         else{
+            saveFragment.edit().putString(AppConstants.SAVE_FRAGMENT, "").apply()
             if(checkNetworkStatus()){
                 reportViewModel.getReportsAsync()
                 reportViewModel.getZonesAzync()
