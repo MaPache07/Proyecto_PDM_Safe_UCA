@@ -188,6 +188,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 logout.isVisible = true
                 myReports.isVisible = true
                 allReports.isVisible = true
+                Glide.with(this).load(auth.currentUser!!.photoUrl).apply(RequestOptions.circleCropTransform()).into(imageView)
             } else Toast.makeText(this, getString(R.string.logIn_error), Toast.LENGTH_LONG).show()
         }
         if(requestCode == AppConstants.REQUEST_CODE){
