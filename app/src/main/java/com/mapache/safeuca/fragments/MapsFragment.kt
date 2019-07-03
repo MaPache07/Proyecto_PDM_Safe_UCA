@@ -153,6 +153,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         arrayList.add(i)
                         i++
                     }
+                    flagBuilding = true
                     mBottomSheetDialog.spinner_building.adapter = ArrayAdapter(context, R.layout.simple_spinner_item, R.id.item_spinner, arrayList)
                 }
                 else if(zone.level == 1){
