@@ -25,10 +25,14 @@
             android:layout_height="wrap_content"
             android:text="ok"
             android:backgroundTint="#8adfdc"
-            android:textColor="#313848"/>
+            android:textColor="#313848"
+            android:layout_margin="@dimen/generalPadding"/>
         <Spinner
             android:id="@+id/spinner_building"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/generalPadding"
+            android:popupBackground="@drawable/skin_spinner"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
     </LinearLayout>
 </LinearLayout>
