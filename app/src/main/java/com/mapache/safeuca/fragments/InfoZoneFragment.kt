@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mapache.safeuca.R
-import com.mapache.safeuca.adapter.ReportAdapter
 import com.mapache.safeuca.adapter.ReportsPerZoneAdapter
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
@@ -30,12 +29,12 @@ class InfoZoneFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
         reportAdapter = ReportsPerZoneAdapter(emptyList(), getString(R.string.pending), getString(R.string.done))
         viewF = inflater.inflate(R.layout.fragment_zone_info, container, false)
-        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        reportViewModel.getReportsPerZone(zone.id).observe(this, Observer {
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+        reportViewModel.getReportsPerZone(zone.id).observe(viewLifecycleOwner, {
             reportAdapter.dataChange(it)
         })
         bindData()

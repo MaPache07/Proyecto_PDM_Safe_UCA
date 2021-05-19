@@ -7,24 +7,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.mapache.safeuca.R
 import com.mapache.safeuca.activities.ReportInfoActivity
 import com.mapache.safeuca.adapter.ReportAdapter
 import com.mapache.safeuca.database.entities.Report
-import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants
 import com.mapache.safeuca.utilities.AppConstants.REPORT_KEY
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_reports.*
 import kotlinx.android.synthetic.main.fragment_reports.view.*
 
 class ReportsFragment : Fragment() {
@@ -43,12 +38,12 @@ class ReportsFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
         viewF = inflater.inflate(R.layout.fragment_reports,container,false)
         auth = FirebaseAuth.getInstance()
-        pref = context!!.getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
-        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        pref = this.requireActivity().getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
         changeList()
         initRecycler(emptyList())
         return viewF
@@ -56,12 +51,12 @@ class ReportsFragment : Fragment() {
 
     fun changeList(){
         if(pref.getString(AppConstants.SAVE_FRAGMENT, "") == "0"){
-            reportViewModel.getReportPerUser(auth.currentUser!!.email).observe(this, Observer { match ->
+            reportViewModel.getReportPerUser(auth.currentUser!!.email).observe(viewLifecycleOwner, { match ->
                 viewAdapter.dataChange(match)
             })
         }
         else{
-            reportViewModel.allReports.observe(this, Observer { match ->
+            reportViewModel.allReports.observe(viewLifecycleOwner, { match ->
                 viewAdapter.dataChange(match)
             })
         }

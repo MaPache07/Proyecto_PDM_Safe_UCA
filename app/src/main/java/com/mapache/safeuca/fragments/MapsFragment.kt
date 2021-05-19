@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -92,10 +92,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     fun initData(){
         auth = FirebaseAuth.getInstance()
 
-        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
         mBottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
 
-        mapTheme = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        mapTheme = this.requireActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
 
         contentInitialDialog = layoutInflater.inflate(R.layout.initial_dialog, null)
         contentZoneDialog = layoutInflater.inflate(R.layout.zone_dialog, null)

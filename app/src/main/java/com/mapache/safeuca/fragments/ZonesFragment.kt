@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +17,6 @@ import com.mapache.safeuca.adapter.ZoneAdapter
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants.SAVE_FRAGMENT
-import com.mapache.safeuca.utilities.AppConstants.SAVE_THEME
 import kotlinx.android.synthetic.main.fragment_zones.view.*
 
 class ZonesFragment : Fragment(){
@@ -51,10 +50,10 @@ class ZonesFragment : Fragment(){
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_zones,container,false)
         auth = FirebaseAuth.getInstance()
-        saveFragment = context!!.getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
+        saveFragment = this.requireActivity().getSharedPreferences("Preferences2", Context.MODE_PRIVATE)
         reportsFragment = ReportsFragment.newInstance()
-        zoneViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        zoneViewModel.allZones.observe(this, Observer { match ->
+        zoneViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+        zoneViewModel.allZones.observe(viewLifecycleOwner, { match ->
             viewAdapter.dataChange(match)
         })
         initRecycler(emptyList(), view)

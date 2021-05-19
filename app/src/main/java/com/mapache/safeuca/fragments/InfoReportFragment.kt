@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
@@ -26,10 +26,10 @@ class InfoReportFragment : Fragment(){
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
         viewF = inflater.inflate(R.layout.fragment_info_report, container, false)
-        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
         bindData()
         return viewF
     }
@@ -44,7 +44,7 @@ class InfoReportFragment : Fragment(){
         else viewF.ar_type.text = getString(R.string.maintenance)
 
         viewF.ar_description.text = report.description
-        reportViewModel.getZone(report.idZone).observe(this, Observer {
+        reportViewModel.getZone(report.idZone).observe(viewLifecycleOwner, {
             viewF.ar_zone.text = it.name
         })
         if(report.status == "0")

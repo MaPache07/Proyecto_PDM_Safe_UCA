@@ -33,7 +33,7 @@ class ReportsPerZoneAdapter (var items : List<Report>, val pending : String, val
             if(item.status == "0")
                 status_del_reporte_en_lista_simple.text = pending
             else status_del_reporte_en_lista_simple.text = done
-            if(item.level == -1) floor_tv.isVisible = false
+            if(item.level == -1) floor_tv.visibility = View.GONE
             else piso_del_reporte_en_lista_simple.text = item.level.toString()
         }
     }
