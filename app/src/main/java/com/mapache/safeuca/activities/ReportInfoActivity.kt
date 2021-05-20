@@ -37,7 +37,8 @@ class ReportInfoActivity : AppCompatActivity() {
         else if (report.danger == "2") ar_danger.text = getString(R.string.high)
 
         if(report.type == "0") ar_type.text = getString(R.string.report)
-        else ar_type.text = getString(R.string.maintenance)
+        else if(report.type == "1") ar_type.text = getString(R.string.maintenance)
+        else if(report.type == "2") ar_type.text = getString(R.string.desinfection)
 
         ar_description.text = report.description
         reportViewModel.getZone(report.idZone).observe(this, {

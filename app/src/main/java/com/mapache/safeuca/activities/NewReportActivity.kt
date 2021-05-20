@@ -55,7 +55,7 @@ class NewReportActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         arrayDanger = arrayOf(getString(R.string.low), getString(R.string.moderate), getString(R.string.high))
-        arrayType = arrayOf(getString(R.string.report), getString(R.string.maintenance))
+        arrayType = arrayOf(getString(R.string.report), getString(R.string.maintenance), getString(R.string.desinfection))
 
         latLng = intent?.extras?.getParcelable(AppConstants.LATLNT_KEY)!!
         idZone = intent?.extras?.getString(AppConstants.ZONE_KEY)!!
