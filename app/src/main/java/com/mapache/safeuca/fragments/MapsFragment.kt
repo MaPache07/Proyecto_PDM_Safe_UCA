@@ -246,7 +246,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
                     marker.tag = it
                     if(it.type == "0") marker.setIcon(context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_report_48dp) })
-                    else marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_maintenance_48dp) })
+                    else if(it.type == "1") marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_maintenance_48dp) })
+                    else if(it.type == "2") marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_desinfection_48dp) })
                 }
             }
         })
