@@ -3,18 +3,18 @@ package com.mapache.safeuca.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.FirebaseApp
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
-import com.mapache.safeuca.fragments.InfoReportFragment
+import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants.REPORT_KEY
 import kotlinx.android.synthetic.main.activity_report_info.*
 
 class ReportInfoActivity : AppCompatActivity() {
 
-    lateinit var infoFragment : InfoReportFragment
+    lateinit var report : Report
+    private lateinit var reportViewModel : ReportViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +24,28 @@ class ReportInfoActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this@ReportInfoActivity)
 
-        val report : Report? = intent?.extras?.getParcelable(REPORT_KEY)
-        infoFragment = InfoReportFragment.newInstance(report!!)
-        changeFragment(R.id.content_fragment_info, infoFragment)
+        report = intent?.extras?.getParcelable(REPORT_KEY)!!
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+
+        bindData()
     }
 
-    private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
+    fun bindData(){
+        ar_name.text = report.name
+        if(report.danger == "0") ar_danger.text = getString(R.string.low)
+        else if(report.danger == "1") ar_danger.text = getString(R.string.moderate)
+        else if (report.danger == "2") ar_danger.text = getString(R.string.high)
+
+        if(report.type == "0") ar_type.text = getString(R.string.report)
+        else ar_type.text = getString(R.string.maintenance)
+
+        ar_description.text = report.description
+        reportViewModel.getZone(report.idZone).observe(this, {
+            ar_zone.text = it.name
+        })
+        if(report.status == "0")
+            ar_status.text = getText(R.string.pending)
+        else ar_status.text = getText(R.string.done)
+        ar_user.text = report.mailUser
+    }
 }
