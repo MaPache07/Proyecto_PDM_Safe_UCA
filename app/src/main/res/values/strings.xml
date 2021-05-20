@@ -48,6 +48,7 @@
     <string name="high">High</string>
     <string name="report">Report</string>
     <string name="maintenance">Maintenance</string>
+    <string name="desinfection">Desinfection</string>
     <string name="reports_inside_uca">Reports must be inside UCA</string>
     <string name="enter_title">Enter title</string>
     <string name="write_description">Write description...</string>

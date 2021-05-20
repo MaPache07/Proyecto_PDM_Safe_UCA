@@ -5,6 +5,7 @@
     <string name="action_ok">Ok</string>
     <string name="action_settings">Configuración</string>
     <string name="all_data">Ingresar datos</string>
+    <string name="desinfection">Desinfección</string>
     <string name="dialogZone">Es esta la zona de riesgo?</string>
     <string name="done">Hecho</string>
     <string name="enter_title">Introducir título</string>
