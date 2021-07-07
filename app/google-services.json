@@ -1,58 +1,41 @@
 {
   "project_info": {
-    "project_number": "139638922326",
-    "firebase_url": "https://proyectopdmsafeuca-24b15.firebaseio.com",
-    "project_id": "proyectopdmsafeuca-24b15",
-    "storage_bucket": "proyectopdmsafeuca-24b15.appspot.com"
+    "project_number": "532658491854",
+    "project_id": "safe-uca-map",
+    "storage_bucket": "safe-uca-map.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:139638922326:android:99a96a7039d8df24",
+        "mobilesdk_app_id": "1:532658491854:android:01262982678f25f5211b9f",
         "android_client_info": {
           "package_name": "com.mapache.safeuca"
         }
       },
       "oauth_client": [
         {
-          "client_id": "139638922326-9mraa9rcg6qpvgh210ed7q7ldgj8jc6u.apps.googleusercontent.com",
+          "client_id": "532658491854-q5vsrqh5q6jd8uif4ddf23nj5dptmsdj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mapache.safeuca",
-            "certificate_hash": "8c9b42fbc382a69cd44c216274cc755bf7f05c99"
+            "certificate_hash": "df02b96927c7ed082a1023fcd745aeb66d898d6f"
           }
         },
         {
-          "client_id": "139638922326-i0t0oh25it1fgup1q9u81m370034ma3g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mapache.safeuca",
-            "certificate_hash": "25c5103ce65626d4c027830ce8cad7edc854092a"
-          }
-        },
-        {
-          "client_id": "139638922326-968o6vnr9v50c1mdvqcjemj1pjrbk3u0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mapache.safeuca",
-            "certificate_hash": "d722594976e09b96427aea3560715ac158dbf1f1"
-          }
-        },
-        {
-          "client_id": "139638922326-1gr11co40ccustfbgpnr4ea2sie0mc1t.apps.googleusercontent.com",
+          "client_id": "532658491854-7strht6nhsl66s30ulafdsjbu8blm2fb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB0h9b1jgbQeo0Uw-svAY1RCtuDJlj8d-8"
+          "current_key": "AIzaSyCiVJBYEk-LQMtRWSQnScw6GIDSsIFrTZI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "139638922326-1gr11co40ccustfbgpnr4ea2sie0mc1t.apps.googleusercontent.com",
+              "client_id": "532658491854-7strht6nhsl66s30ulafdsjbu8blm2fb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
