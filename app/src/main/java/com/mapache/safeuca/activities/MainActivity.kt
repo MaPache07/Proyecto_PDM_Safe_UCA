@@ -1,4 +1,4 @@
-package com.mapache.safeuca .activities
+package com.mapache.safeuca.activities
 
 import android.Manifest
 import android.app.Activity
@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -18,7 +17,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -39,6 +37,7 @@ import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.fragments.ZonesFragment
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.CAMERA_REQUEST_CODE
 import com.mapache.safeuca.utilities.AppConstants.LOCATION_REQUEST_CODE
 import com.mapache.safeuca.utilities.AppConstants.MY_REQUEST_CODE
 import kotlinx.android.synthetic.main.activity_main.*
@@ -132,6 +131,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
             }
         }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            if(!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+            }
+        }
     }
 
     fun initData(){
@@ -178,12 +182,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == MY_REQUEST_CODE) {
-            val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(this, getString(R.string.logIn_successful), Toast.LENGTH_LONG).show()
                 correo_en_nav.text = user!!.email
-                nombre_en_nav.text = user!!.displayName
+                nombre_en_nav.text = user.displayName
                 logIn.isVisible = false
                 logout.isVisible = true
                 myReports.isVisible = true
