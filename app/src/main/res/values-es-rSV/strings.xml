@@ -65,4 +65,8 @@
     <string name="dark_mode">Modo oscuro</string>
     <string name="map">Mapa</string>
     <string name="my_reports">Mis reportes</string>
+    <string name="image_action">Subir imagen</string>
+    <string name="choose_app">Seleccione la aplicación</string>
+    <string name="floor_number">Seleccione el número de piso</string>
+    <string name="no_camera_permission">Sin permisos de camara</string>
 </resources>

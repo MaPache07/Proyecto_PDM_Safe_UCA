@@ -65,4 +65,8 @@
     <string name="all_reports">All reports</string>
     <string name="dark_mode">Dark mode</string>
     <string name="bright_mode">Bright mode</string>
+    <string name="image_action">Upload image</string>
+    <string name="choose_app">Select application</string>
+    <string name="floor_number">Select floor number</string>
+    <string name="no_camera_permission">without permission from the camera</string>
 </resources>
