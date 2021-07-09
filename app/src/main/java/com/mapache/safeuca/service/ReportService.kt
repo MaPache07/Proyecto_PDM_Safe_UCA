@@ -29,6 +29,7 @@ interface ReportService {
         @Field("type") type : String,
         @Field("status") status : String,
         @Field("mailUser") mailUser : String,
+        @Field("image") image : String,
         @Field("description") description : String,
         @Field("lat") lat : Double,
         @Field("ltn") ltn : Double,

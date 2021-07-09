@@ -17,6 +17,7 @@ data class Report(
     @field:Json(name = "type") val type : String,
     @field:Json(name = "status") val status : String,
     @field:Json(name = "mailUser") val mailUser : String,
+    @field:Json(name = "image") val image : String,
     @field:Json(name = "description") val description : String,
     @field:Json(name = "lat") val lat : Double,
     @field:Json(name = "ltn") val ltn : Double,
@@ -24,6 +25,7 @@ data class Report(
     @field:Json(name = "level") val level : Int
 ) : Parcelable {
     constructor(parcel : Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -44,6 +46,7 @@ data class Report(
         dest.writeString(type)
         dest.writeString(status)
         dest.writeString(mailUser)
+        dest.writeString(image)
         dest.writeString(description)
         dest.writeDouble(lat)
         dest.writeDouble(ltn)

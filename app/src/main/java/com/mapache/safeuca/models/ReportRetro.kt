@@ -10,6 +10,7 @@ data class ReportRetro(
     @field:Json(name = "type") val type : String,
     @field:Json(name = "status") val status : String,
     @field:Json(name = "mailUser") val mailUser : String,
+    @field:Json(name = "image") val image : String,
     @field:Json(name = "description") val description : String,
     @field:Json(name = "lat") val lat : Double,
     @field:Json(name = "ltn") val ltn : Double,

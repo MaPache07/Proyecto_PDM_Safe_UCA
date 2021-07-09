@@ -51,6 +51,7 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
             reportRetro.type,
             reportRetro.status,
             reportRetro.mailUser,
+            reportRetro.image,
             reportRetro.description,
             reportRetro.lat,
             reportRetro.ltn,

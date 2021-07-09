@@ -43,7 +43,7 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
             this.body()?.forEach {
                 this@ReportViewModel.insertZone(it.idZone)
                 val report = Report(it.id, it.name, it.danger, it.type, it.status, it.mailUser,
-                            it.description, it.lat, it.ltn, it.idZone.id, it.level)
+                            it.image, it.description, it.lat, it.ltn, it.idZone.id, it.level)
                 this@ReportViewModel.insertReport(report)
             }
         } else with(response){

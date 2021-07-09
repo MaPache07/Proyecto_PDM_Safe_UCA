@@ -9,7 +9,7 @@ import com.mapache.safeuca.database.daos.ZoneDao
 import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 
-@Database(entities = arrayOf(Report::class, Zone::class), version = 1)
+@Database(entities = arrayOf(Report::class, Zone::class), version = 2)
 public abstract class RoomDB : RoomDatabase() {
 
     abstract fun reportDao() : ReportDao
