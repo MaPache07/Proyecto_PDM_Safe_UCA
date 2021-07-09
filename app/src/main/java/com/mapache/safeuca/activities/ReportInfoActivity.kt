@@ -1,7 +1,9 @@
 package com.mapache.safeuca.activities
 
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.FirebaseApp
@@ -31,6 +33,8 @@ class ReportInfoActivity : AppCompatActivity() {
     }
 
     fun bindData(){
+        val imageBytes = Base64.decode(report.image, 0)
+        ar_image.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size))
         ar_name.text = report.name
         if(report.danger == "0") ar_danger.text = getString(R.string.low)
         else if(report.danger == "1") ar_danger.text = getString(R.string.moderate)
