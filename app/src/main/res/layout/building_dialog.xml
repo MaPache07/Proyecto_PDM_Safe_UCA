@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/generalPadding"
-    android:background="#313848">
+    android:background="@color/colorWhite">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#8adfdc"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/normalText"
-        android:text="Select floor number"
+        android:text="@string/floor_number"
         android:layout_margin="@dimen/generalPadding"
         android:gravity="center"/>
     <LinearLayout
@@ -23,9 +23,9 @@
             android:id="@+id/building_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ok"
-            android:backgroundTint="#8adfdc"
-            android:textColor="#313848"
+            android:text="@string/action_ok"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:layout_margin="@dimen/generalPadding"/>
         <Spinner
             android:id="@+id/spinner_building"

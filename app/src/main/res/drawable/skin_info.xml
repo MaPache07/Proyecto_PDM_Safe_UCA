@@ -9,7 +9,7 @@
     <item>
         <shape>
             <corners android:radius="@dimen/radius"/>
-            <solid android:color="@color/colorSecundary"/>
+            <solid android:color="@color/colorWhite"/>
         </shape>
     </item>
 </layer-list>

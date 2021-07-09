@@ -15,7 +15,7 @@
             android:id="@+id/nombre_de_reportes_en_lista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorSecundary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/smallText"/>
     </LinearLayout>
     <LinearLayout
@@ -30,11 +30,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/generalPadding"
-            android:textSize="@dimen/superSmallText"/>
+            android:textSize="@dimen/superSmallText"
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/superSmallText"
-            android:text="@string/more_info"/>
+            android:text="@string/more_info"
+            android:textColor="@color/colorPrimaryDark"/>
     </LinearLayout>
 </LinearLayout>

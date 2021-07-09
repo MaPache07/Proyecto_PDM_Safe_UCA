@@ -14,7 +14,7 @@
             android:id="@+id/nombre_de_reportes_en_lista_simple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorSecundary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/smallText"/>
     </LinearLayout>
     <LinearLayout
