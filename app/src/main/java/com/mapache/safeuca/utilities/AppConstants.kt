@@ -7,6 +7,8 @@ object AppConstants {
     val ZONE_KEY = "IdZoneKey"
     val REPORT_KEY = "ReportKey"
     val REQUEST_CODE = 7
+    val GALERY_REQUEST_CODE = 785
+    val CAMERA_REQUEST_CODE = 875
     val SAVE_THEME = "SaveTheme"
     val SAVE_FRAGMENT = "SaveFragment"
     val MY_REQUEST_CODE : Int = 123
