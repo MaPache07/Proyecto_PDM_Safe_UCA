@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,13 +107,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     fun setOnClickListeners(){
         mBottomSheetDialog.setOnDismissListener{
             marker.remove()
-            (contentInitialDialog.parent as ViewGroup).removeAllViews()
             if(flagZone){
-                (contentZoneDialog.parent as ViewGroup).removeAllViews()
                 flagZone = false
             }
             if(flagBuilding){
-                (contentBuildingDialog.parent as ViewGroup).removeAllViews()
                 flagBuilding = false
             }
         }
@@ -136,6 +134,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         contentZoneDialog.zone_no.setOnClickListener {
             click?.newReportClick(marker.position, "5d13aa0b5003f10017fb2cc0", -1)
+            mBottomSheetDialog.dismiss()
         }
 
         contentZoneDialog.zone_si.setOnClickListener {
