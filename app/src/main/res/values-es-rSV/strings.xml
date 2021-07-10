@@ -69,4 +69,6 @@
     <string name="choose_app">Seleccione la aplicación</string>
     <string name="floor_number">Seleccione el número de piso</string>
     <string name="no_camera_permission">Sin permisos de camara</string>
+    <string name="accept">Aceptar</string>
+    <string name="reject">Rechazar</string>
 </resources>

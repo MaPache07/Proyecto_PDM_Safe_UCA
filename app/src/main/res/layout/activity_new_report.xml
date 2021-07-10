@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="10"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorBlack"
                     android:hint="@string/write_description"
                     android:textColorHint="@color/colorHint"
                     android:gravity="top"

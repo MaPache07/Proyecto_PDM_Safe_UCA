@@ -1,15 +1,22 @@
 package com.mapache.safeuca.activities
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.FirebaseApp
 import com.mapache.safeuca.R
 import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
+import com.mapache.safeuca.utilities.AppConstants.ADMIN_FLAG
 import com.mapache.safeuca.utilities.AppConstants.REPORT_KEY
 import kotlinx.android.synthetic.main.activity_report_info.*
 
@@ -52,5 +59,37 @@ class ReportInfoActivity : AppCompatActivity() {
             ar_status.text = getText(R.string.pending)
         else ar_status.text = getText(R.string.done)
         ar_user.text = report.mailUser
+
+        if(report.status != "0"){
+            report_accept.visibility = View.INVISIBLE
+            report_reject.visibility = View.INVISIBLE
+        }
+
+        setOnClickListeners()
+    }
+
+    fun checkNetworkStatus() : Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if(connectivityManager is ConnectivityManager){
+            val networkInfo : NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
+    }
+
+    fun setOnClickListeners(){
+        report_accept.setOnClickListener {
+            if(checkNetworkStatus()){
+                report.status = "1"
+                reportViewModel.putReport(report)
+            }
+            else Toast.makeText(applicationContext, getString(R.string.internet_required), Toast.LENGTH_LONG).show()
+        }
+        report_reject.setOnClickListener {
+            if(checkNetworkStatus()){
+                report.status = "2"
+                reportViewModel.putReport(report)
+            }
+            else Toast.makeText(applicationContext, getString(R.string.internet_required), Toast.LENGTH_LONG).show()
+        }
     }
 }
