@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 
@@ -12,6 +13,9 @@ interface ReportDao {
 
     @Insert
     suspend fun insert(report : Report)
+
+    @Update
+    suspend fun update(report : Report)
 
     @Query("SELECT * FROM report_table")
     fun getAllReport() : LiveData<List<Report>>

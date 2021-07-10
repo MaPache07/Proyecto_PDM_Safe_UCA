@@ -74,6 +74,11 @@ class ReportViewModel(private val app: Application) : AndroidViewModel(app) {
         repository.postReport(reportRetro).execute()
     }
 
+    fun putReport(reportRetro: Report) = viewModelScope.launch(Dispatchers.IO){
+        repository.updateReport(reportRetro)
+        repository.putReport(reportRetro).execute()
+    }
+
     fun getReport(id : String) = repository.getReport(id)
 
     fun getReportsPerZone(id : String) = repository.allReportsPerZone(id)

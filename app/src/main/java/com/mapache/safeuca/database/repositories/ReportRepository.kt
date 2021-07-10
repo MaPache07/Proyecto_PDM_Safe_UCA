@@ -8,6 +8,7 @@ import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.models.DefaultResponse
 import com.mapache.safeuca.models.ReportRetro
+import com.mapache.safeuca.models.UpdateReport
 import com.mapache.safeuca.service.ReportService
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -21,6 +22,11 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
     @WorkerThread
     suspend fun insertReport(report : Report){
         reportDao.insert(report)
+    }
+
+    @WorkerThread
+    suspend fun updateReport(report: Report){
+        reportDao.update(report)
     }
 
     @WorkerThread
@@ -46,6 +52,24 @@ class ReportRepository(private val reportDao: ReportDao, private val zoneDao: Zo
 
     fun postReport(reportRetro: Report) : Call<DefaultResponse> {
         return ReportService.getRetrofit().postReport(
+            reportRetro.name,
+            reportRetro.danger,
+            reportRetro.type,
+            reportRetro.status,
+            reportRetro.mailUser,
+            reportRetro.image,
+            reportRetro.description,
+            reportRetro.lat,
+            reportRetro.ltn,
+            reportRetro.idZone,
+            reportRetro.level
+        )
+    }
+
+    fun putReport(reportRetro: Report) : Call<DefaultResponse> {
+        return ReportService.getRetrofit().putReport(
+            reportRetro.id,
+            reportRetro.id,
             reportRetro.name,
             reportRetro.danger,
             reportRetro.type,

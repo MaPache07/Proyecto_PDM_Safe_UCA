@@ -10,12 +10,12 @@ import com.squareup.moshi.Json
 @Entity(tableName = "report_table",
         foreignKeys = [ForeignKey(entity = Zone::class, parentColumns = ["id"], childColumns = ["idZone"])])
 data class Report(
-    @PrimaryKey
+        @PrimaryKey
     @field:Json(name = "_id") val id : String,
     @field:Json(name = "name") val name : String,
     @field:Json(name = "danger") val danger : String,
     @field:Json(name = "type") val type : String,
-    @field:Json(name = "status") val status : String,
+    @field:Json(name = "status") var status : String,
     @field:Json(name = "mailUser") val mailUser : String,
     @field:Json(name = "image") val image : String,
     @field:Json(name = "description") val description : String,

@@ -37,6 +37,24 @@ interface ReportService {
         @Field("level") level : Int
     ) : Call<DefaultResponse>
 
+    @Headers("Content-Type: application/json")
+    @PUT("/reports/{id}")
+    fun putReport(
+        @Path("id") id : String,
+        @Field("_id") idr : String,
+        @Field("name") name : String,
+        @Field("danger") danger : String,
+        @Field("type") type : String,
+        @Field("status") status : String,
+        @Field("mailUser") mailUser : String,
+        @Field("image") image : String,
+        @Field("description") description : String,
+        @Field("lat") lat : Double,
+        @Field("ltn") ltn : Double,
+        @Field("idZone") idZone : String,
+        @Field("level") level : Int
+    ) : Call<DefaultResponse>
+
     companion object{
         fun getRetrofit() : ReportService{
             return Retrofit.Builder()
