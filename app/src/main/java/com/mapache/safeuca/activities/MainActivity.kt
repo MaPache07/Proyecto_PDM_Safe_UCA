@@ -37,6 +37,7 @@ import com.mapache.safeuca.fragments.MapsFragment
 import com.mapache.safeuca.fragments.ReportsFragment
 import com.mapache.safeuca.fragments.ZonesFragment
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.ADMIN_FLAG
 import com.mapache.safeuca.utilities.AppConstants.CAMERA_REQUEST_CODE
 import com.mapache.safeuca.utilities.AppConstants.LOCATION_REQUEST_CODE
 import com.mapache.safeuca.utilities.AppConstants.MY_REQUEST_CODE
@@ -114,6 +115,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
         if(auth.currentUser != null){
             val user = FirebaseAuth.getInstance().currentUser
+            if(user!!.email == "mapacheco785@gmail.com"){
+                ADMIN_FLAG = true
+            }
             if(flag) Toast.makeText(this, user!!.email, Toast.LENGTH_SHORT).show()
             logIn.isVisible = false
             logout.isVisible = true

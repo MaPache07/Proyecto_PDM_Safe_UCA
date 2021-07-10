@@ -36,6 +36,7 @@ import com.mapache.safeuca.database.entities.Report
 import com.mapache.safeuca.database.entities.Zone
 import com.mapache.safeuca.database.viewmodels.ReportViewModel
 import com.mapache.safeuca.utilities.AppConstants
+import com.mapache.safeuca.utilities.AppConstants.ADMIN_FLAG
 import com.mapache.safeuca.utilities.AppConstants.REPORT_KEY
 import kotlinx.android.synthetic.main.building_dialog.*
 import kotlinx.android.synthetic.main.building_dialog.view.*
@@ -240,12 +241,27 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     fun initMap(mMap : GoogleMap){
         reportViewModel.allReports.observe(this, Observer {
             it.forEach{
-                if(it.status == "0"){
-                    val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
-                    marker.tag = it
-                    if(it.type == "0") marker.setIcon(context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_report_48dp) })
-                    else if(it.type == "1") marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_maintenance_48dp) })
-                    else if(it.type == "2") marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_desinfection_48dp) })
+                if(it.status != "2"){
+                    if(it.type == "0" && it.status == "1"){
+                        val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+                        marker.tag = it
+                        marker.setIcon(context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_report_48dp) })
+                    }
+                    else if(it.type == "1" && it.status == "1"){
+                        val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+                        marker.tag = it
+                        marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_maintenance_48dp) })
+                    }
+                    else if(it.type == "2" && it.status == "1"){
+                        val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+                        marker.tag = it
+                        marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_desinfection_48dp) })
+                    }
+                    if(it.status == "0" && ADMIN_FLAG){
+                        val marker = mMap.addMarker(MarkerOptions().position(LatLng(it.lat, it.ltn)).title(it.name))
+                        marker.tag = it
+                        marker.setIcon(this!!.context?.let { it1 -> getBitmapFromVectorDrawable(it1, R.drawable.ic_pending_48dp) })
+                    }
                 }
             }
         })
